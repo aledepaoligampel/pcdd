@@ -50,6 +50,28 @@ pcdd time pause primera-feature
 
 El agente redacta las specs y actualiza `pcdd/changes/primera-feature.md`. Tasks usa líneas `- [ ] T1 (S1) descripción`; `>` en curso, `!` bloqueada, `x` completada. El CLI valida IDs y estados y devuelve JSON con conteo y tiempo para que el agente lo comunique. No infiere aprobación humana del porcentaje. El resumen del agente usa el formato **PCDD · 2/3 tareas completadas · 2 min 48 s**, sin aclaraciones sobre el inicio o la pausa del reloj.
 
+Al empezar o retomar un change y cuando cambia el estado de una tarea, el agente muestra un bloque breve en el chat. Ejemplo ilustrativo:
+
+> **PCDD · 1/3 tareas completadas**
+>
+> - Completada · T1 · Definir los criterios de aceptación.
+> - En curso · T2 · Implementar el cambio.
+> - Pendiente · T3 · Ejecutar las verificaciones.
+>
+> Siguiente paso: verificar el comportamiento implementado.
+
+Los IDs, estados y conteos salen del documento del change mediante el CLI. En listas largas se muestran solo las tareas relevantes, con el conteo total. Durante operaciones largas, el agente explica qué sigue ejecutándose y qué resultado falta; ante un bloqueo, indica qué puede resolverlo. Al cerrar el tramo agrega el tiempo medido. Las tareas completas no sustituyen tu prueba y confirmación del resultado.
+
+Además del bloque en el chat, el agente usa las herramientas de tareas nativas que exponga la sesión para reflejar las tareas del change al empezar o retomar y en cada transición. El documento se actualiza primero; el panel conserva los IDs de PCDD en las etiquetas y no mantiene otro plan. Si el cliente no admite un estado, por ejemplo bloqueada, la etiqueta o descripción lo expresa. Si faltan las herramientas, el agente avisa al inicio que mostrará progreso en texto; si fallan, comunica la limitación y continúa con el documento y el bloque del chat.
+
+En Claude Code se pueden habilitar las herramientas nativas solo para una sesión, sin modificar la configuración global:
+
+```sh
+CLAUDE_CODE_ENABLE_TODO_TOOLS=1 claude
+```
+
+La [documentación oficial de Claude Code](https://code.claude.com/docs/en/tools-reference.md#task-tool-availability) describe la disponibilidad por modelo y esta opción. La prueba local con Claude Code 2.1.323 verificó llamadas reales a `TaskCreate`, `TaskUpdate` y `TaskList`, con transición pendiente → en curso → completada. Fue una ejecución no interactiva: la visualización del panel requiere comprobarla en el cliente. La disponibilidad en Codex también depende de las herramientas expuestas en esa sesión; instalar PCDD no las habilita.
+
 `start` inicia un intervalo; `pause` y `stop` lo cierran. El tiempo cerrado y el intervalo abierto se muestran separados. Al abandonar un chat con intervalo abierto, usar `pcdd time abandon primera-feature` al retomar: registra incompletitud sin sumar tiempo desconocido. Después `start`. No hay detección automática de cierre del chat ni estimación del tiempo restante.
 
 ## Actualizar y recuperar

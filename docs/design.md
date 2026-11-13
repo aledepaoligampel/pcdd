@@ -31,7 +31,13 @@ Roadmap: estado de la feature. Documento: estado de tareas (pendiente, en curso,
 
 ## Progreso y tiempo
 
-El agente comunica cambios de estado en un párrafo propio, por ejemplo: «PCDD · 4/6 tareas completadas · 18 min». Muestra solo progreso y duración medida, sin estado del reloj ni detalles del registro. Si hay tiempo incompleto que afecte la interpretación, lo explica por separado. El cociente cuenta tareas; no mide esfuerzo ni predice tiempo restante.
+Al iniciar o retomar un change y al cambiar el estado de sus tareas, el agente muestra un bloque breve con el conteo, las tareas completadas relevantes, la tarea activa y el próximo paso o bloqueo. Cada línea identifica la tarea y su estado. Para listas largas muestra un subconjunto pertinente; el conteo del CLI incluye todas las tareas. El documento del change es la única fuente de tareas y estados; el chat y las herramientas del cliente no mantienen otro plan independiente. Si no hay tarea activa, indica qué queda pendiente, incluida la aceptación humana cuando corresponda.
+
+Durante operaciones largas comunica qué tarea sigue ejecutándose y qué resultado falta conocer, sin porcentajes inventados, éxitos anticipados ni un bloque por comando. La presentación funciona mediante mensajes del agente, sin depender de una interfaz específica del cliente.
+
+Cuando la sesión expone herramientas de tareas nativas, el agente las usa como vista derivada del change al empezar o retomar y después de cada transición. Actualiza primero el documento, conserva IDs de PCDD en etiquetas, reconcilia entradas existentes y preserva tareas ajenas. Un estado sin equivalente nativo queda explícito en la etiqueta o descripción. Si las herramientas faltan o fallan, comunica la limitación y conserva el documento y el bloque en texto. No altera ajustes del cliente ni crea objetivos o sesiones como sustituto. Verificar llamadas nativas no acredita el renderizado visual del panel.
+
+Al cerrar un tramo añade la duración medida al encabezado, por ejemplo: «PCDD · 4/6 tareas completadas · 18 min», sin estado del reloj ni detalles del registro. Usa el total cerrado confirmado por el CLI. Si hay tiempo incompleto que afecte la interpretación, lo explica por separado. El cociente cuenta tareas; no mide esfuerzo ni predice tiempo restante.
 
 El reloj y los intervalos se registran de forma determinista. Tests cuentan; esperas de aprobación se separan. Sesiones sin cierre quedan incompletas y no se suman como si se conociera su duración. El total es tiempo transcurrido registrado, no tiempo de CPU ni horas humanas. No se prometen detección perfecta de inactividad ni instrumentación idéntica de clientes.
 

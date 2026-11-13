@@ -18,11 +18,25 @@ Follow the language policy in the core: respond in the user's language, write pr
 - Complete a task when it meets its criterion and has evidence. Explain scope when tasks are added; a changed denominator does not automatically mean regression.
 - Track time with `pcdd time start <name>`. Use `pause` or `stop` to close the interval before waiting for a reply or ending the turn. Tests and builds count as work; human waiting does not. Each start is an interval, not necessarily a chat session.
 - On resuming, consult `pcdd time status <name>`. If an interval from another session remains open and its end is unknown, use `abandon`, not `stop`: it remains incomplete and excluded from the total. Do not estimate missing time. Then start a new interval.
-- Report progress when status changes, in its own paragraph at the end of the summary, separated from the preceding text by a blank line: `**PCDD** · 4/6 tasks completed · 18 min`. Show only the task count and measured duration, using minutes and seconds when useful. Omit timer status and recording details such as “recorded since the timer started” or “timer paused”. Do not append the paragraph to a sentence about files or continuation. Use the confirmed closed total; do not invent unmeasured time. Explain missing or incomplete timing separately only when it materially affects the result. Do not confuse task counts with effort or final acceptance.
+- Check the tools exposed in the current session for native task tracking, such as `update_plan` or Claude Code's `TaskCreate`, `TaskUpdate`, and `TaskList`. Use available tools at startup/resumption and after task state changes to mirror the change document, updating the document first. Preserve the PCDD IDs in task labels even when the client assigns its own IDs. Reconcile existing entries for this change instead of duplicating them; preserve unrelated tasks. Native task entries are a derived view, never an independent plan. Map only supported states faithfully; if a state such as blocked has no native equivalent, keep the exact state and blocker explicit in the label or description. Do not mark a blocked task completed to fit the client.
+- If native tools are absent, report at startup that progress will be shown in text. If a native update fails, report that limitation and continue with the document and chat block. Do not invent tools, equate Markdown lists with a native panel, or use goals, new sessions, background jobs, or external trackers as substitutes. Do not change client settings automatically. Tool calls verify task operations; visual rendering requires an interactive client check.
+- When starting or resuming and whenever task status changes, show a brief, separate progress block. Use a heading such as `**PCDD** · 4/6 tasks completed`, followed by a few short lines with task IDs, concise descriptions and explicit states (completed, in progress, pending, blocked). Include relevant completed tasks, the active task or tasks, and the next step or blocker. For a long task list, show only the relevant subset; the CLI count still covers all tasks. If no task is active, say what is pending, including human acceptance when appropriate. Update the change document first and obtain the count through the CLI. Its Tasks section is the source of truth; never maintain a second independent plan in chat or client tools.
+- During long operations, give occasional short updates naming the active task, what is still running, and what result or check is still pending. Do not invent intermediate percentages, repeat the full block for every command, or imply success before evidence arrives. Explain blockers plainly and name the next action that can resolve them. User-facing updates must not depend on a particular client's task UI.
+- When closing a work interval, append the confirmed closed total to the block heading, for example `**PCDD** · 4/6 tasks completed · 18 min`. Use minutes and seconds when useful; do not invent unmeasured time. Omit timer status and recording details such as “recorded since the timer started” or “timer paused”. Explain missing or incomplete timing separately only when it materially affects the result. Do not confuse task counts with effort, ETAs or final acceptance.
 - Before pausing, update the continuation section with the next step, blocker, and current evidence. Preserve original decisions in Log; consult it only to resolve uncertainty.
 - At delivery, report behavior, validation, residual risks, recorded time and incomplete intervals, and human testing steps. Keep acceptance pending until the user tests and confirms.
 
 If the CLI is missing or fails, report it; do not invent metrics or download tools automatically. Tasks can be maintained in Markdown while the limitation is resolved.
+
+Example of a mid-work update (illustrative counts and tasks; translate for the user):
+
+**PCDD** · 3/5 tasks completed
+
+- Completed · T3 · Isolated proxy and measurement.
+- In progress · T4 · Run comparison suite.
+- Pending · T5 · Review results and prepare delivery.
+
+The pilot passed. The comparison suite is still running; equivalence checks remain pending.
 
 ## Save progress
 
