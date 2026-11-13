@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pcdd/lock
+.pcdd/pending.json
+.pcdd/last-update.json
+.pcdd-write-*

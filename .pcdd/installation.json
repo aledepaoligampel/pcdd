@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "version": "0.3.0",
+  "adapters": [
+    "codex",
+    "claude"
+  ],
+  "files": {
+    ".pcdd/core.md": "4f77cfb18af7f5a80235bd339ec41568f30f064b3885f33d6ac72849f4611d0e",
+    "AGENTS.md": "2553194101e959b46d97389ffdc3bfa701d7c7021c78ca840a2bd7aa4c149790",
+    "CLAUDE.md": "5eba5f9929c82148d08422ba73176c19f69289a1709b187838242bef735f4dda",
+    ".agents/skills/pcdd-work/SKILL.md": "d001df943b19f69c48f87fe24114d967a2f947383f85ad850e815b901faeed85",
+    ".agents/skills/pcdd-review/SKILL.md": "b5304658162763ffd64ea19b2bf2db8d916113ba92bc07208d6d82aa04e3e3b0",
+    ".agents/skills/pcdd-commit/SKILL.md": "dd13e638999066ae89199a55f1be7b006044646a9ad8257f80eb35ef037c6d40",
+    ".agents/skills/pcdd-commit-review/SKILL.md": "69a3768adb8b0f61319fa3fd7ec6455716d055a69fa156057926f510a8563ba5",
+    ".claude/skills/pcdd-work/SKILL.md": "d001df943b19f69c48f87fe24114d967a2f947383f85ad850e815b901faeed85",
+    ".claude/skills/pcdd-review/SKILL.md": "b5304658162763ffd64ea19b2bf2db8d916113ba92bc07208d6d82aa04e3e3b0",
+    ".claude/skills/pcdd-commit/SKILL.md": "dd13e638999066ae89199a55f1be7b006044646a9ad8257f80eb35ef037c6d40",
+    ".claude/skills/pcdd-commit-review/SKILL.md": "69a3768adb8b0f61319fa3fd7ec6455716d055a69fa156057926f510a8563ba5"
+  }
+}
