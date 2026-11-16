@@ -1,0 +1,24 @@
+{
+  "name": "pcdd",
+  "version": "0.4.0",
+  "description": "Progressive Change-Driven Development for AI coding agents. Runs the PCDD CLI from PyPI through uv.",
+  "keywords": ["ai", "agents", "codex", "claude-code", "workflow", "cli", "pcdd"],
+  "homepage": "https://pcdd.dev",
+  "bugs": "https://github.com/aledepaoligampel/pcdd/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aledepaoligampel/pcdd.git",
+    "directory": "npm"
+  },
+  "license": "MIT",
+  "author": "aledepaoligampel",
+  "bin": {
+    "pcdd": "bin/pcdd.js"
+  },
+  "files": [
+    "bin/pcdd.js"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
