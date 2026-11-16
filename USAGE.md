@@ -12,7 +12,7 @@ uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd
 pipx install git+https://github.com/aledepaoligampel/pcdd
 ```
 
-Mientras el repositorio sea privado se necesita acceso de lectura en GitHub. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
+Si no tenés uv: `brew install uv` o `curl -LsSf https://astral.sh/uv/install.sh | sh` ([otras opciones](https://docs.astral.sh/uv/getting-started/installation/)). Para pipx: `brew install pipx && pipx ensurepath`. Abrí una terminal nueva para que `pcdd` quede en el `PATH`. Mientras el repositorio sea privado se necesita acceso de lectura en GitHub. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
 
 ## Ejecutar sin instalar
 
