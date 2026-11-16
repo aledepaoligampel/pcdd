@@ -51,7 +51,7 @@ pipx install git+https://github.com/aledepaoligampel/pcdd
 
 If you don't have uv, install it with `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh` (see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for Windows and other options). For pipx, use `brew install pipx && pipx ensurepath`. Open a new terminal afterwards so `pcdd` is on your `PATH`.
 
-While the repository is private, you need read access to it on GitHub. You can also install from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
+You can also install from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
 
 Then work from the project where you want to use PCDD:
 

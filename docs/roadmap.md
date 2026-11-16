@@ -15,4 +15,4 @@ Estado global de los changes. Las tareas de cada change se mantienen en su docum
 | antigravity | Adaptador seleccionable, rutas compartidas y compatibilidad v0.4 | Completado y aceptado; 53 tests y dos revisiones PASS; piloto en Antigravity CLI satisfactorio |
 | public-readme | README público en inglés, documentación y nueva publicación privada sin historial anterior | Completado y aceptado; README en inglés, 53 tests y dos revisiones PASS; repositorio privado recreado con un único commit raíz |
 
-La publicación sigue siendo privada; no hay versión pública ni paquete en un registro. El paquete se instala desde el repositorio Git con uv o pipx.
+El repositorio es público; todavía no hay paquete en un registro. El paquete se instala desde el repositorio Git con uv o pipx.
