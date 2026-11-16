@@ -1,0 +1,20 @@
+# PCDD
+
+> PCDD (Progressive Change-Driven Development) is an open-source toolkit for working with AI coding agents (Codex, Claude Code, Antigravity). It gives each change just enough process: small, clear work goes straight through; substantial work gets approved specs and a change record in the repository; risky work gets independent review before commit. The user accepts the result. MIT licensed, Python 3.9+, no runtime dependencies.
+
+Install with `curl -fsSL https://pcdd.dev/install.sh | sh`, `uv tool install pcdd` or `pipx install pcdd`, then run `pcdd init` in the project root. Agents start by reading `AGENTS.md` and `.pcdd/core.md`; each substantial change lives in `pcdd/changes/<name>.md` with specs, tasks, evidence and a continuation point.
+
+## Docs
+
+- [README](https://github.com/aledepaoligampel/pcdd/blob/main/README.md): what PCDD is, how it works, installation and scope
+- [Core instructions](https://github.com/aledepaoligampel/pcdd/blob/main/src/pcdd_toolkit/assets/core.md): the rules agents follow in a PCDD project
+- [Change template](https://github.com/aledepaoligampel/pcdd/blob/main/src/pcdd_toolkit/assets/change.md): format of `pcdd/changes/<name>.md`
+- [pcdd-work skill](https://github.com/aledepaoligampel/pcdd/blob/main/src/pcdd_toolkit/assets/skills/pcdd-work/SKILL.md): defining, implementing, saving and resuming a change
+- [pcdd-review skill](https://github.com/aledepaoligampel/pcdd/blob/main/src/pcdd_toolkit/assets/skills/pcdd-review/SKILL.md): independent review for high-risk changes
+- [Local usage (Spanish)](https://github.com/aledepaoligampel/pcdd/blob/main/USAGE.md): CLI commands, update, rollback and recovery
+
+## Optional
+
+- [PyPI package](https://pypi.org/project/pcdd/)
+- [Source code](https://github.com/aledepaoligampel/pcdd)
+- [Comparison with SDD and ODD (Spanish)](https://github.com/aledepaoligampel/pcdd/blob/main/docs/pcdd-sdd-odd.md)

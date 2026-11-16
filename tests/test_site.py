@@ -1,7 +1,9 @@
 import base64
 import gzip
 import hashlib
+import json
 import re
+import struct
 import subprocess
 import sys
 import unittest
@@ -20,7 +22,9 @@ class Outline(HTMLParser):
         self.ids = []
         self.attrs = []
         self.inline_scripts = []
+        self.structured = []
         self._in_script = False
+        self._in_ld = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -28,14 +32,18 @@ class Outline(HTMLParser):
         self.attrs.append((tag, a))
         if "id" in a:
             self.ids.append(a["id"])
-        self._in_script = tag == "script" and "src" not in a
+        self._in_script = tag == "script" and "src" not in a and a.get("type") != "application/ld+json"
+        self._in_ld = tag == "script" and a.get("type") == "application/ld+json"
 
     def handle_endtag(self, tag):
         self._in_script = False
+        self._in_ld = False
 
     def handle_data(self, data):
         if self._in_script and data.strip():
             self.inline_scripts.append(data)
+        if self._in_ld:
+            self.structured.append(data)
 
 
 def outline(path):
@@ -100,7 +108,7 @@ class SiteTests(unittest.TestCase):
             import build_site
         finally:
             sys.path.pop(0)
-        same_on_purpose = {"x_names"}
+        same_on_purpose = {"x_names", "star"}  # "Star" is GitHub's own button label
         untranslated = [k for k, v in build_site.ES.items()
                         if k not in same_on_purpose and v == build_site.EN[k]]
         self.assertEqual(untranslated, [])
@@ -125,6 +133,35 @@ class SiteTests(unittest.TestCase):
         self.assertTrue(text.startswith("#!/bin/sh\n"))
         self.assertIn('"$uv" tool install --upgrade pcdd', text)
         self.assertRegex(text, re.compile(r"^main \"\$@\"\n\Z", re.M))
+
+    def test_search_and_sharing_metadata(self):
+        for lang, path in PAGES.items():
+            parsed = outline(path)
+            self.assertEqual(len(parsed.structured), 1)
+            data = json.loads(parsed.structured[0])
+            self.assertEqual(data["@type"], "SoftwareApplication")
+            self.assertEqual(data["inLanguage"], lang)
+            html = path.read_text(encoding="utf-8")
+            self.assertIn('<meta property="og:image" content="https://pcdd.dev/og.png">', html)
+            self.assertIn('<meta name="twitter:card" content="summary_large_image">', html)
+        width, height = struct.unpack(">II", (SITE / "og.png").read_bytes()[16:24])
+        self.assertEqual((width, height), (1200, 630))
+
+    def test_crawler_files(self):
+        robots = (SITE / "robots.txt").read_text(encoding="utf-8")
+        self.assertIn("Sitemap: https://pcdd.dev/sitemap.xml", robots)
+        sitemap = (SITE / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("<loc>https://pcdd.dev/</loc>", sitemap)
+        self.assertIn("<loc>https://pcdd.dev/es/</loc>", sitemap)
+        not_found = (SITE / "404.html").read_text(encoding="utf-8")
+        self.assertIn('<meta name="robots" content="noindex">', not_found)
+        self.assertEqual(outline(SITE / "404.html").inline_scripts, [])
+        self.assertTrue((SITE / "llms.txt").read_text(encoding="utf-8").startswith("# PCDD\n\n> "))
+
+    def test_context7_configuration(self):
+        config = json.loads((ROOT / "context7.json").read_text(encoding="utf-8"))
+        self.assertLessEqual(len(config["projectTitle"]), 100)
+        self.assertLessEqual(len(config["description"]), 500)
 
 
 if __name__ == "__main__":

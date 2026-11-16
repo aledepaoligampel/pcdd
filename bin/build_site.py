@@ -8,6 +8,8 @@ the English and Spanish pages in sync; run it after editing copy or markup and
 commit the output. --check exits 1 if the committed pages are out of date.
 """
 import hashlib
+import json
+import re
 import sys
 from pathlib import Path
 
@@ -15,7 +17,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 REPO = "https://github.com/aledepaoligampel/pcdd"
 INSTALL = "curl -fsSL https://pcdd.dev/install.sh | sh"
-VERSION = "v0.4"
+PACKAGE_VERSION = re.search(r"__version__ = '([^']+)'",
+                            (ROOT / "src" / "pcdd_toolkit" / "__init__.py").read_text(encoding="utf-8")).group(1)
+VERSION = "v" + ".".join(PACKAGE_VERSION.split(".")[:2])
 
 LOGO = ('<svg aria-hidden="true" width="{s}" height="{s}" viewBox="0 0 48 48">'
         '<path d="M4 40 L44 40 L38.7 31 L9.3 31 Z" fill="#C8F560"/>'
@@ -155,6 +159,7 @@ EN = {
     "f_h2": "Each change,<br>just enough process.", "f_lead": "Install in one line. Try it on your next change.",
     "f_star": "Star on GitHub",
     "footer": "PCDD v0.4 is an early toolkit. The CLI manages files and records; instructions guide the agent but can’t guarantee a model follows them. Checks and your acceptance stay essential. Codex, Claude Code and Antigravity are trademarks of their respective owners; PCDD is not affiliated with them.",
+    "og_alt": "PCDD: ship with AI agents without losing the plot.",
     "license": "MIT License", "footer_label": "Footer", "skipped": "skipped", "copied_status": "Install command copied.",
 }
 
@@ -165,7 +170,7 @@ ES.update({
     "description": "PCDD le da a cada cambio el proceso justo: una spec cuando importa, un registro que sobrevive a la sesión y una línea de llegada que aprobás vos. Funciona con Codex, Claude Code y Antigravity.",
     "skip": "Ir al contenido", "home": "pcdd, inicio",
     "nav": ["Por qué", "Cómo funciona", "Empezar", "Comparación"],
-    "star_label": "Estrella para PCDD en GitHub",
+    "star_label": "Star a PCDD en GitHub",
     "badge": "Código abierto · MIT · Codex, Claude Code, Antigravity",
     "acro_extra": "<small> · desarrollo progresivo guiado por cambios</small>",
     "h1": ["Programá con IA.", "Sin perder", "el hilo."],
@@ -263,8 +268,9 @@ ES.update({
     "f_h2": "Cada cambio,<br>el proceso justo.", "f_lead": "Se instala en una línea. Probalo en tu próximo cambio.",
     "f_star": "Dale una estrella en GitHub",
     "footer": "PCDD v0.4 es un toolkit temprano. La CLI gestiona archivos y registros; las instrucciones guían al agente pero no garantizan que el modelo las siga. Los checks y tu aceptación siguen siendo esenciales. Codex, Claude Code y Antigravity son marcas de sus respectivos dueños; PCDD no está afiliado a ellos.",
+    "og_alt": "PCDD: programá con agentes de IA sin perder el hilo.",
     "license": "Licencia MIT", "footer_label": "Pie de página", "skipped": "omitido", "copied_status": "Comando de instalación copiado.",
-    "star": "Estrella",
+    "star": "Star",
 })
 
 
@@ -330,6 +336,26 @@ def versioned(name):
     return f"/assets/{name}?v={digest}"
 
 
+def structured_data(t):
+    data = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "PCDD",
+        "alternateName": "Progressive Change-Driven Development",
+        "description": t["description"],
+        "url": "https://pcdd.dev" + t["path"],
+        "inLanguage": t["lang"],
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS, Linux, Windows",
+        "softwareVersion": PACKAGE_VERSION,
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "downloadUrl": "https://pypi.org/project/pcdd/",
+        "sameAs": [REPO, "https://pypi.org/project/pcdd/"],
+    }
+    return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
 def page(t):
     css = versioned("site.css")
     js = versioned("site.js")
@@ -381,6 +407,14 @@ def page(t):
 <meta property="og:title" content="{t["title"]}">
 <meta property="og:description" content="{t["description"]}">
 <meta property="og:locale" content="{"en_US" if t["lang"] == "en" else "es_AR"}">
+<meta property="og:locale:alternate" content="{"es_AR" if t["lang"] == "en" else "en_US"}">
+<meta property="og:site_name" content="PCDD">
+<meta property="og:image" content="https://pcdd.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{t["og_alt"]}">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{structured_data(t)}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
@@ -487,14 +521,37 @@ def page(t):
 '''
 
 
-OUTPUTS = {SITE / "index.html": EN, SITE / "es" / "index.html": ES}
+def not_found(_t=None):
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · PCDD</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{versioned("site.css")}">
+</head>
+<body>
+<main id="main" class="nf">
+<a class="brand" href="/" aria-label="pcdd, home">{LOGO.format(s=30)}pcdd</a>
+<h1>404</h1>
+<p class="lead">This page doesn’t exist. <span lang="es">Esta página no existe.</span></p>
+<p class="nf-links"><a href="/">Go to pcdd.dev</a><a href="/es/" lang="es" hreflang="es">Ir a la versión en español</a></p>
+</main>
+</body>
+</html>
+'''
+
+
+OUTPUTS = {SITE / "index.html": EN, SITE / "es" / "index.html": ES, SITE / "404.html": None}
 
 
 def main(argv):
     check = "--check" in argv
     stale = []
     for path, strings in OUTPUTS.items():
-        html = page(strings)
+        html = page(strings) if strings else not_found()
         if check:
             if not path.exists() or path.read_text(encoding="utf-8") != html:
                 stale.append(str(path.relative_to(ROOT)))

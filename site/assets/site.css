@@ -194,3 +194,6 @@ footer nav{display:flex;gap:24px;flex-wrap:wrap}footer nav a{color:var(--muted);
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .plain{margin:0;padding:0;list-style:none}
 .w2{width:29%}.w3{width:43%}.w4{width:57%}.w5{width:71%}.w6{width:86%}.w7{width:100%}
+.nf{min-height:100vh;max-width:720px;margin:0 auto;padding:48px 24px;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.nf h1{font-size:clamp(64px,12vw,120px);color:var(--acc)}
+.nf-links{display:flex;flex-wrap:wrap;gap:12px 28px;margin:0}.nf-links a{color:var(--acc);padding:8px 0}
