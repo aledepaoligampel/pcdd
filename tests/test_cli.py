@@ -9,6 +9,7 @@ import time
 import unittest
 
 CLI = Path(__file__).resolve().parents[1] / 'pcdd.py'
+PACKAGE = CLI.parent / 'src' / 'pcdd_toolkit'
 
 
 class CliTests(unittest.TestCase):
@@ -133,10 +134,9 @@ class CliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as distribution:
             dist = Path(distribution)
             shutil.copy(CLI, dist / 'pcdd.py')
-            shutil.copy(CLI.parent / 'presentation.py', dist / 'presentation.py')
-            shutil.copytree(CLI.parent / 'locales', dist / 'locales')
-            shutil.copytree(CLI.parent / 'assets', dist / 'assets')
-            (dist / 'assets/core.md').write_bytes(old + b'\nNew release rule\n')
+            shutil.copytree(PACKAGE, dist / 'src/pcdd_toolkit',
+                            ignore=shutil.ignore_patterns('__pycache__'))
+            (dist / 'src/pcdd_toolkit/assets/core.md').write_bytes(old + b'\nNew release rule\n')
             before = self.snapshot()
             self.run_cli('update', '--dry-run', cli=dist / 'pcdd.py')
             self.assertEqual(before, self.snapshot())

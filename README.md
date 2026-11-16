@@ -41,13 +41,15 @@ PCDD uses specifications and adapts process to the work. Its concrete choices ar
 
 ## Try it
 
-Requires **Python 3.9+**, with no runtime dependencies. Use the toolkit from a local checkout; it is not distributed through a package registry.
-
-Add the checkout's launcher to your `PATH` for the current terminal session. Replace `/path/to/pcdd` with the absolute path to your PCDD checkout:
+Requires **Python 3.9+**, with no runtime dependencies. PCDD is not published to a package registry yet; install it from the Git repository with [uv](https://docs.astral.sh/uv/) (recommended) or [pipx](https://pipx.pypa.io/). Both put the `pcdd` command on your `PATH` in an isolated environment:
 
 ```sh
-export PATH="/path/to/pcdd/bin:$PATH"
+uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd
+# or
+pipx install git+https://github.com/aledepaoligampel/pcdd
 ```
+
+While the repository is private, you need read access to it on GitHub. You can also install from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
 
 Then work from the project where you want to use PCDD:
 
@@ -60,7 +62,7 @@ pcdd doctor
 
 `init` installs Codex and Claude Code by default. Select Antigravity with `pcdd init --adapters antigravity`, or combine adapters with commas, such as `--adapters codex,claude,antigravity`. Codex and Antigravity share `AGENTS.md` and the four skills in `.agents/skills/`; Claude Code also uses `CLAUDE.md` and `.claude/skills/`. Review the preview before applying it. Existing installations keep their adapter selection when updated.
 
-The launcher uses Python 3. You can also invoke `python3 /path/to/pcdd/pcdd.py` directly; use `--project /path/to/your-project` before the subcommand to target a project without changing directories.
+Without installing, you can run a checkout directly with `python3 /path/to/pcdd/pcdd.py` or add `/path/to/pcdd/bin` to your `PATH`; use `--project /path/to/your-project` before the subcommand to target a project without changing directories.
 
 Open a new agent session in the target project and describe the change you want. The installed instructions guide the agent through the appropriate workflow. Configure real project checks before committing; a fresh installation has no gate commands yet.
 
@@ -68,9 +70,12 @@ To check the toolkit itself:
 
 ```sh
 make ready
+make package-check  # builds and installs a wheel in a temporary venv; needs network
 ```
 
 See [usage and recovery](USAGE.md), [design](docs/design.md), [verification](docs/verification.md), and the [roadmap](docs/roadmap.md) for details. These project documents are currently in Spanish.
+
+PCDD is released under the [MIT License](LICENSE).
 
 ## Current scope
 

@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 CLI = Path(__file__).resolve().parents[1] / 'pcdd.py'
+PACKAGE = CLI.parent / 'src' / 'pcdd_toolkit'
 COMMIT_SKILLS = ('pcdd-commit', 'pcdd-commit-review')
 
 
@@ -65,7 +66,7 @@ class CommitSkillsTests(unittest.TestCase):
                         self.assertEqual(path.exists(), adapter in adapters.split(','))
                         if path.exists():
                             self.assertEqual(path.read_bytes(),
-                                             (CLI.parent / 'assets/skills' / skill / 'SKILL.md').read_bytes())
+                                             (PACKAGE / 'assets/skills' / skill / 'SKILL.md').read_bytes())
                 self.run_cli('doctor')
 
     def test_legacy_update_preview_preserves_content_and_rollback_restores_inventory(self):
@@ -95,7 +96,7 @@ class CommitSkillsTests(unittest.TestCase):
         self.legacy_installation()
         target = self.root / '.agents/skills/pcdd-commit/SKILL.md'
         target.parent.mkdir(parents=True)
-        asset = CLI.parent / 'assets/skills/pcdd-commit/SKILL.md'
+        asset = PACKAGE / 'assets/skills/pcdd-commit/SKILL.md'
         target.write_bytes(asset.read_bytes() if asset.exists() else b'Customer commit skill')
         before = self.snapshot()
         for args in (('update', '--dry-run'), ('update',), ('init',)):

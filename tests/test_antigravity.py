@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 CLI = Path(__file__).resolve().parents[1] / 'pcdd.py'
+PACKAGE = CLI.parent / 'src' / 'pcdd_toolkit'
 SKILLS = ('pcdd-work', 'pcdd-review', 'pcdd-commit', 'pcdd-commit-review')
 
 
@@ -37,11 +38,10 @@ class AntigravityTests(unittest.TestCase):
     def changed_distribution(self):
         target = Path(self.temp.name) / 'kit'
         target.mkdir()
-        for name in ('pcdd.py', 'presentation.py'):
-            shutil.copy2(CLI.parent / name, target / name)
-        for name in ('assets', 'locales'):
-            shutil.copytree(CLI.parent / name, target / name)
-        with (target / 'assets/core.md').open('ab') as stream:
+        shutil.copy2(CLI, target / 'pcdd.py')
+        shutil.copytree(PACKAGE, target / 'src/pcdd_toolkit',
+                        ignore=shutil.ignore_patterns('__pycache__'))
+        with (target / 'src/pcdd_toolkit/assets/core.md').open('ab') as stream:
             stream.write(b'\nUpdated instructions for testing.\n')
         return target / 'pcdd.py'
 
@@ -67,7 +67,7 @@ class AntigravityTests(unittest.TestCase):
                             self.assertEqual(path.exists(), enabled)
                             if enabled:
                                 self.assertEqual(path.read_bytes(),
-                                                 (CLI.parent / 'assets/skills' / skill / 'SKILL.md').read_bytes())
+                                                 (PACKAGE / 'assets/skills' / skill / 'SKILL.md').read_bytes())
                     self.assertEqual((self.root / 'CLAUDE.md').exists(), 'claude' in selected)
                     manifest = json.loads((self.root / '.pcdd/installation.json').read_text())
                     paths = set(self.snapshot()) - {'.pcdd/config.json', '.pcdd/installation.json'}
@@ -113,7 +113,7 @@ class AntigravityTests(unittest.TestCase):
     def test_conflicts_and_symlinks_are_rejected_before_writes(self):
         path = self.root / '.agents/skills/pcdd-work/SKILL.md'
         path.parent.mkdir(parents=True)
-        path.write_bytes((CLI.parent / 'assets/skills/pcdd-work/SKILL.md').read_bytes())
+        path.write_bytes((PACKAGE / 'assets/skills/pcdd-work/SKILL.md').read_bytes())
         before = self.snapshot()
         for args in (('init', '--dry-run'), ('init',)):
             report = self.run_cli(*args, '--adapters', 'antigravity', ok=False)

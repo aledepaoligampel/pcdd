@@ -6,7 +6,8 @@
 - Use this checkout's CLI: `python3 pcdd.py` from the repository root (add `--json` for machine-readable output). Do not rely on a different PCDD installation from PATH.
 - Runtime: Python 3.9+, no runtime dependencies. Public CLI tests use temporary projects; there is no database gate. Gate commands live in `.pcdd/config.json`.
 - Commits require explicit authorization; implementation or spec approval alone does not authorize committing. Follow the high-risk checkpoint in the installed core when applicable.
-- Develop distributed instructions in `assets/`. The installed `.pcdd/core.md` and adapter skills are managed snapshots, not editable sources. Keep them fixed while implementing instruction changes. After validation, preview and explicitly refresh this installation with `python3 pcdd.py update --dry-run` and `python3 pcdd.py update` within the authorized scope; use a new client session to load refreshed skills. Do not update them automatically during a change.
+- CLI code lives in `src/pcdd_toolkit/`; `pcdd.py` is only the checkout launcher. Packaging metadata is in `pyproject.toml`; the version's single source is `src/pcdd_toolkit/__init__.py`.
+- Develop distributed instructions in `src/pcdd_toolkit/assets/`. The installed `.pcdd/core.md` and adapter skills are managed snapshots, not editable sources. Keep them fixed while implementing instruction changes. After validation, preview and explicitly refresh this installation with `python3 pcdd.py update --dry-run` and `python3 pcdd.py update` within the authorized scope; use a new client session to load refreshed skills. Do not update them automatically during a change.
 <!-- pcdd:begin -->
 Read `.pcdd/core.md` for the workflow. Load only relevant skills.
 <!-- pcdd:end -->

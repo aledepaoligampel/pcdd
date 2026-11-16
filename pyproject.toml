@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pcdd"
+dynamic = ["version"]
+description = "Progressive Change-Driven Development: a local toolkit for working with AI coding agents"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "aledepaoligampel" }]
+dependencies = []
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Repository = "https://github.com/aledepaoligampel/pcdd"
+
+[project.scripts]
+pcdd = "pcdd_toolkit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pcdd_toolkit = ["assets/*.md", "assets/skills/*/SKILL.md", "locales/*.json"]
+
+[tool.setuptools.dynamic]
+version = { attr = "pcdd_toolkit.__version__" }

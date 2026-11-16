@@ -1,8 +1,20 @@
 # Uso local de PCDD v0.4
 
-Requiere Python 3.9 o posterior. Sin dependencias de runtime ni servicios. Este kit no está publicado en un registro de paquetes.
+Requiere Python 3.9 o posterior. Sin dependencias de runtime ni servicios. Este kit no está publicado en un registro de paquetes. Licencia MIT.
 
-## Ejecutar
+## Instalar el comando
+
+Con [uv](https://docs.astral.sh/uv/) (recomendado) o [pipx](https://pipx.pypa.io/), que instalan `pcdd` en un entorno aislado y lo agregan al `PATH`:
+
+```sh
+uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd
+# o
+pipx install git+https://github.com/aledepaoligampel/pcdd
+```
+
+Mientras el repositorio sea privado se necesita acceso de lectura en GitHub. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
+
+## Ejecutar sin instalar
 
 Desde un proyecto existente:
 
@@ -168,10 +180,11 @@ python3 pcdd.py doctor
 python3 pcdd.py --json time status self-hosting
 ```
 
-Las fuentes distribuibles viven en `assets/`. Las copias de `.pcdd/core.md`, `.agents/skills/` y `.claude/skills/` son archivos administrados: no se editan a mano. Durante un cambio de instrucciones se trabaja sobre las fuentes conservando la versión instalada. Después de validar el cambio, actualizar explícitamente esta instalación dentro del alcance autorizado:
+Las fuentes distribuibles viven en `src/pcdd_toolkit/assets/`; el código del CLI, en `src/pcdd_toolkit/`, y `pcdd.py` es solo el lanzador del checkout. Las copias de `.pcdd/core.md`, `.agents/skills/` y `.claude/skills/` son archivos administrados: no se editan a mano. Durante un cambio de instrucciones se trabaja sobre las fuentes conservando la versión instalada. Después de validar el cambio, actualizar explícitamente esta instalación dentro del alcance autorizado:
 
 ```sh
 make ready
+make package-check   # opcional; construye e instala un wheel en un venv temporal, requiere red
 python3 pcdd.py update --dry-run
 python3 pcdd.py update
 python3 pcdd.py doctor

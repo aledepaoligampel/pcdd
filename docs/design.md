@@ -15,7 +15,7 @@ Repositorio independiente en `/path/to/pcdd`. El CLI administra instrucciones ve
 
 `update --dry-run` muestra el plan sin escribir. `update` valida todos los conflictos antes de aplicar. Un archivo administrado modificado requiere resolución explícita; sin fusiones automáticas silenciosas. La reversión solo restaura archivos administrados cuando hacerlo no borra cambios posteriores del cliente.
 
-Actualizar el ejecutable no actualiza por sí solo los repositorios. Cada proyecto fija su versión. El mecanismo de distribución del ejecutable se resolverá en la implementación; la v0.1 se prueba localmente sin publicar un paquete.
+Actualizar el ejecutable no actualiza por sí solo los repositorios. Cada proyecto fija su versión. El ejecutable se distribuye como paquete Python (`pyproject.toml`, nombre `pcdd`, código en `src/pcdd_toolkit/` con assets y locales como datos del paquete) y se instala con `uv tool install` o `pipx` desde Git o un checkout; no hay publicación en un registro. Se descartó por ahora un wrapper npm: igual requeriría Python y duplicaría la distribución. El paquete importable no se llama `pcdd` porque `pcdd/changes/` ocupa ese nombre en la raíz del repositorio. `pcdd.py` queda como lanzador del checkout.
 
 ## Flujo y contexto
 
@@ -65,7 +65,7 @@ El núcleo contiene la política de atribución para cualquier commit; los skill
 
 El repositorio instala los mismos assets que distribuye a otros proyectos, mediante el CLI normal, para ambos adaptadores. Su configuración define `make ready` y ningún gate de base. `AGENTS.md` conserva únicamente las convenciones del proyecto y el bloque administrado de entrada; `CLAUDE.md` remite a esas instrucciones y al núcleo.
 
-Las fuentes en `assets/` y los snapshots instalados son archivos distintos. Se modifican las fuentes durante el desarrollo; los snapshots permanecen fijos hasta validar y ejecutar una actualización explícita. Esta separación permite desarrollar una regla sin cambiar inmediatamente el flujo que guía ese mismo trabajo. No hay enlaces simbólicos ni sincronización automática. La instalación propia complementa los tests en proyectos temporales; no los sustituye.
+Las fuentes en `src/pcdd_toolkit/assets/` y los snapshots instalados son archivos distintos. Se modifican las fuentes durante el desarrollo; los snapshots permanecen fijos hasta validar y ejecutar una actualización explícita. Esta separación permite desarrollar una regla sin cambiar inmediatamente el flujo que guía ese mismo trabajo. No hay enlaces simbólicos ni sincronización automática. La instalación propia complementa los tests en proyectos temporales; no los sustituye.
 
 Se conservan los requisitos y las aprobaciones históricas. Por decisión explícita del usuario, la documentación distribuida omite citas de procedencia, identificando como resúmenes el alcance conservado. Los registros de tiempo nuevos empiezan en intervalos explícitos, sin estimar trabajo anterior. Las autorizaciones de commit y publicación del repositorio se conservan.
 
