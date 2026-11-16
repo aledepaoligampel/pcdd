@@ -104,5 +104,23 @@ class NpmLauncherTests(unittest.TestCase):
         self.assertIn("npx @pcdd-dev/cli", result.stderr)
 
 
+class ReleaseWorkflowTests(unittest.TestCase):
+    def test_tags_publish_npm_after_pypi_without_tokens(self):
+        workflow = (ROOT / ".github" / "workflows" / "publish.yml").read_text(encoding="utf-8")
+        npm_job = workflow.split("\n  publish-npm:\n", 1)
+        self.assertEqual(len(npm_job), 2, "publish-npm job is missing")
+        job = npm_job[1]
+        self.assertIn("needs: publish\n", job)  # the launcher needs the PyPI release first
+        self.assertIn("name: npm\n", job)
+        self.assertIn("id-token: write", job)
+        self.assertIn("working-directory: npm", job)
+        self.assertIn("npm publish", job)
+        self.assertNotIn("secrets.", workflow)  # trusted publishing only
+        self.assertIn('test "v$(node -p "require(\'./npm/package.json\').version")" = "$GITHUB_REF_NAME"', workflow)
+        for line in workflow.splitlines():
+            if "uses:" in line:
+                self.assertRegex(line, r"@[0-9a-f]{40} # v", line)
+
+
 if __name__ == "__main__":
     unittest.main()
