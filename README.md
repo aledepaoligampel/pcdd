@@ -57,6 +57,8 @@ pipx install pcdd
 
 If you don't have uv, install it with `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh` (see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for Windows and other options). For pipx, use `brew install pipx && pipx ensurepath`. Open a new terminal afterwards so `pcdd` is on your `PATH`.
 
+From npm, the [`@pcdd-dev/cli`](https://www.npmjs.com/package/@pcdd-dev/cli) launcher runs the same PyPI release through uv without installing it: `npx @pcdd-dev/cli init`.
+
 You can also install the latest `main` with `uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd`, or from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
 
 Then work from the project where you want to use PCDD:

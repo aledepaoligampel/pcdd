@@ -2,7 +2,7 @@
 
 > PCDD (Progressive Change-Driven Development) is an open-source toolkit for working with AI coding agents (Codex, Claude Code, Antigravity). It gives each change just enough process: small, clear work goes straight through; substantial work gets approved specs and a change record in the repository; risky work gets independent review before commit. The user accepts the result. MIT licensed, Python 3.9+, no runtime dependencies.
 
-Install with `curl -fsSL https://pcdd.dev/install.sh | sh`, `uv tool install pcdd` or `pipx install pcdd`, then run `pcdd init` in the project root. Agents start by reading `AGENTS.md` and `.pcdd/core.md`; each substantial change lives in `pcdd/changes/<name>.md` with specs, tasks, evidence and a continuation point.
+Install with `curl -fsSL https://pcdd.dev/install.sh | sh`, `uv tool install pcdd` or `pipx install pcdd` (or run it without installing via `npx @pcdd-dev/cli`), then run `pcdd init` in the project root. Agents start by reading `AGENTS.md` and `.pcdd/core.md`; each substantial change lives in `pcdd/changes/<name>.md` with specs, tasks, evidence and a continuation point.
 
 ## Docs
 

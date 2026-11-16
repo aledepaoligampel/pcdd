@@ -18,7 +18,7 @@ uv tool install pcdd
 pipx install pcdd
 ```
 
-Si no tenés uv: `brew install uv` o `curl -LsSf https://astral.sh/uv/install.sh | sh` ([otras opciones](https://docs.astral.sh/uv/getting-started/installation/)). Para pipx: `brew install pipx && pipx ensurepath`. Abrí una terminal nueva para que `pcdd` quede en el `PATH`. Para la versión de `main`: `uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd`. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
+Si no tenés uv: `brew install uv` o `curl -LsSf https://astral.sh/uv/install.sh | sh` ([otras opciones](https://docs.astral.sh/uv/getting-started/installation/)). Para pipx: `brew install pipx && pipx ensurepath`. Abrí una terminal nueva para que `pcdd` quede en el `PATH`. Desde npm, el lanzador [`@pcdd-dev/cli`](https://www.npmjs.com/package/@pcdd-dev/cli) ejecuta la misma versión de PyPI con uv, sin instalarla: `npx @pcdd-dev/cli init`. Para la versión de `main`: `uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd`. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
 
 ## Ejecutar sin instalar
 

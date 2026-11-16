@@ -66,7 +66,7 @@ EN = {
     "h1": ["Ship with AI agents.", "Without losing", "the plot."],
     "sub": 'PCDD gives every change <em>just enough process</em>: a spec when it matters, a record that outlives the session, and a finish line you approve.',
     "copy": "Copy", "copied": "Copied", "copy_label": "Copy install command",
-    "alt": "or uv tool install pcdd · pipx install pcdd · Python 3.9+, zero dependencies",
+    "alt": "or uv tool install pcdd · pipx install pcdd · npx @pcdd-dev/cli · Python 3.9+, zero dependencies",
     "term_label": "PCDD command-line session", "term_dir": "~/your-project",
     "term": [
         ("cmd", "pcdd init"), ("dim", "  ›_ pcdd · each change, just enough."), ("ok", "PCDD is ready."),
@@ -176,7 +176,7 @@ ES.update({
     "h1": ["Programá con IA.", "Sin perder", "el hilo."],
     "sub": 'PCDD le da a cada cambio <em>el proceso justo</em>: una spec cuando importa, un registro que sobrevive a la sesión y una línea de llegada que aprobás vos.',
     "copy": "Copiar", "copied": "Copiado", "copy_label": "Copiar el comando de instalación",
-    "alt": "o uv tool install pcdd · pipx install pcdd · Python 3.9+, sin dependencias",
+    "alt": "o uv tool install pcdd · pipx install pcdd · npx @pcdd-dev/cli · Python 3.9+, sin dependencias",
     "term_label": "Sesión de la CLI de PCDD", "term_dir": "~/tu-proyecto",
     "term": [
         ("cmd", "pcdd init"), ("dim", "  ›_ pcdd · cada cambio, el proceso justo."), ("ok", "PCDD está listo."),
