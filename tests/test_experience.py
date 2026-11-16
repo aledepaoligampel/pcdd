@@ -30,7 +30,7 @@ class ExperienceTests(unittest.TestCase):
 
     def test_human_preview_is_spanish_and_readonly(self):
         result = self.run_cli('init', '--dry-run')
-        self.assertIn('cada cambio, lo necesario.', result.stdout)
+        self.assertIn('cada cambio, el proceso justo.', result.stdout)
         self.assertIn('Vista previa', result.stdout)
         self.assertIn('AGENTS.md', result.stdout)
         self.assertNotIn('\x1b', result.stdout + result.stderr)
