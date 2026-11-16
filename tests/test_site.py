@@ -140,6 +140,19 @@ class SiteTests(unittest.TestCase):
         self.assertIn('"$uv" tool install --upgrade pcdd', text)
         self.assertRegex(text, re.compile(r"^main \"\$@\"\n\Z", re.M))
 
+    def test_install_script_runs_on_linux_in_ci(self):
+        workflow = (ROOT / ".github" / "workflows" / "install.yml").read_text(encoding="utf-8")
+        self.assertIn("ubuntu-latest", workflow)
+        self.assertIn("ubuntu-24.04-arm", workflow)
+        self.assertIn("sh site/install.sh", workflow)
+        self.assertIn('HOME="$(mktemp -d)"', workflow)  # starts without uv or pcdd
+        self.assertIn("pcdd\" --lang en doctor", workflow)
+        self.assertIn("permissions:\n  contents: read", workflow)
+        self.assertNotIn("secrets.", workflow)
+        for line in workflow.splitlines():
+            if "uses:" in line:
+                self.assertRegex(line, r"@[0-9a-f]{40} # v", line)
+
     def test_search_and_sharing_metadata(self):
         for lang, path in PAGES.items():
             parsed = outline(path)

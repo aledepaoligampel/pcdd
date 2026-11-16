@@ -1,0 +1,42 @@
+name: install
+
+# Runs site/install.sh (served at https://pcdd.dev/install.sh) on clean Linux runners.
+on:
+  push:
+    branches: [main]
+    paths: ["site/install.sh", ".github/workflows/install.yml"]
+  pull_request:
+    paths: ["site/install.sh", ".github/workflows/install.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install from a clean home with only system tools on PATH
+        run: |
+          export HOME="$(mktemp -d)"
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+          unset XDG_BIN_HOME XDG_DATA_HOME UV_INSTALL_DIR
+          for tool in uv pcdd; do
+            if command -v "$tool"; then echo "$tool is already on PATH"; exit 1; fi
+          done
+          sh site/install.sh
+          echo "--- second run (idempotent)"
+          sh site/install.sh
+          bin="$HOME/.local/bin"
+          "$bin/pcdd" --version
+          mkdir "$HOME/project" && cd "$HOME/project"
+          git init -q
+          "$bin/pcdd" --lang en init
+          "$bin/pcdd" --lang en doctor
