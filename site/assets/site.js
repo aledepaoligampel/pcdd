@@ -40,6 +40,24 @@
     });
   }
 
+  // Reveal each block once it scrolls into view (visible from the start without JS).
+  var blocks = d.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || reduce) {
+    blocks.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      var shown = 0;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var el = e.target;
+        setTimeout(function () { el.classList.add('in'); }, shown * 90);
+        shown += 1;
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+    blocks.forEach(function (el) { io.observe(el); });
+  }
+
   // GitHub stars; the counter stays hidden if the API fails or there are none yet.
   fetch('https://api.github.com/repos/aledepaoligampel/pcdd')
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
