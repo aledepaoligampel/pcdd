@@ -3,10 +3,22 @@
   "projectTitle": "PCDD",
   "description": "Progressive Change-Driven Development: a CLI and agent instructions that give each change made with AI coding agents (Codex, Claude Code, Antigravity) just enough process — specs, a resumable change record and independent review only when the risk calls for it.",
   "folders": [],
-  "excludeFolders": ["tests", "site", "bin", ".github", "pcdd", ".pcdd", ".agents", ".claude"],
-  "excludeFiles": ["CLAUDE.md"],
+  "excludeFolders": [
+    "tests",
+    "site",
+    "bin",
+    ".github",
+    "pcdd",
+    ".pcdd",
+    ".agents",
+    ".claude",
+    "npm"
+  ],
+  "excludeFiles": [
+    "CLAUDE.md"
+  ],
   "rules": [
-    "Install the CLI with `uv tool install pcdd` or `pipx install pcdd` (Python 3.9+), then run `pcdd init` in the project root; preview with `pcdd init --dry-run`.",
+    "Install the CLI with `curl -fsSL https://pcdd.dev/install.sh | sh`, `uv tool install pcdd` or `pipx install pcdd` (Python 3.9+), or run it without installing via `npx @pcdd-dev/cli`; then run `pcdd init` in the project root (preview with `pcdd init --dry-run`).",
     "Agents read `AGENTS.md` and `.pcdd/core.md` first and load skills only when needed.",
     "Substantial changes live in `pcdd/changes/<name>.md`, created with `pcdd new <name>`; keep task syntax `- [ ] T1 (S1) description` unchanged because the CLI parses it.",
     "Use `pcdd --json` for machine-readable output; human output is not a parsing contract.",
