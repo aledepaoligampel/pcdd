@@ -107,6 +107,8 @@ class SiteTests(unittest.TestCase):
             digest = hashlib.sha256((SITE / "assets" / name).read_bytes()).hexdigest()[:10]
             for path in PAGES.values():
                 self.assertIn(f"/assets/{name}?v={digest}", path.read_text(encoding="utf-8"))
+            if name == "site.css":
+                self.assertIn(f"/assets/{name}?v={digest}", (SITE / "404.html").read_text(encoding="utf-8"))
 
     def test_spanish_strings_are_translated(self):
         sys.path.insert(0, str(ROOT / "bin"))
