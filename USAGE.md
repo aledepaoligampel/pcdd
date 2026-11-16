@@ -1,18 +1,24 @@
 # Uso local de PCDD v0.4
 
-Requiere Python 3.9 o posterior. Sin dependencias de runtime ni servicios. Este kit no está publicado en un registro de paquetes. Licencia MIT.
+Requiere Python 3.9 o posterior. Sin dependencias de runtime ni servicios. Publicado en PyPI como [`pcdd`](https://pypi.org/project/pcdd/). Licencia MIT.
 
 ## Instalar el comando
 
-Con [uv](https://docs.astral.sh/uv/) (recomendado) o [pipx](https://pipx.pypa.io/), que instalan `pcdd` en un entorno aislado y lo agregan al `PATH`:
+En una línea (instala [uv](https://docs.astral.sh/uv/) si falta):
 
 ```sh
-uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd
-# o
-pipx install git+https://github.com/aledepaoligampel/pcdd
+curl -fsSL https://pcdd.dev/install.sh | sh
 ```
 
-Si no tenés uv: `brew install uv` o `curl -LsSf https://astral.sh/uv/install.sh | sh` ([otras opciones](https://docs.astral.sh/uv/getting-started/installation/)). Para pipx: `brew install pipx && pipx ensurepath`. Abrí una terminal nueva para que `pcdd` quede en el `PATH`. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
+O con uv (recomendado) o [pipx](https://pipx.pypa.io/), que instalan `pcdd` en un entorno aislado y lo agregan al `PATH`:
+
+```sh
+uv tool install pcdd
+# o
+pipx install pcdd
+```
+
+Si no tenés uv: `brew install uv` o `curl -LsSf https://astral.sh/uv/install.sh | sh` ([otras opciones](https://docs.astral.sh/uv/getting-started/installation/)). Para pipx: `brew install pipx && pipx ensurepath`. Abrí una terminal nueva para que `pcdd` quede en el `PATH`. Para la versión de `main`: `uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd`. Desde un checkout local: `uv tool install /path/to/pcdd` o `pipx install /path/to/pcdd`. Para actualizar: `uv tool upgrade pcdd` o `pipx upgrade pcdd`. Después, desde el proyecto: `pcdd init --dry-run`, `pcdd init` y `pcdd doctor`.
 
 ## Ejecutar sin instalar
 

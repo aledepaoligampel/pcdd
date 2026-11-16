@@ -41,17 +41,23 @@ PCDD uses specifications and adapts process to the work. Its concrete choices ar
 
 ## Try it
 
-Requires **Python 3.9+**, with no runtime dependencies. PCDD is not published to a package registry yet; install it from the Git repository with [uv](https://docs.astral.sh/uv/) (recommended) or [pipx](https://pipx.pypa.io/). Both put the `pcdd` command on your `PATH` in an isolated environment:
+Requires **Python 3.9+**, with no runtime dependencies. Install it in one line (it installs [uv](https://docs.astral.sh/uv/) if it's missing):
 
 ```sh
-uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd
+curl -fsSL https://pcdd.dev/install.sh | sh
+```
+
+Or install the [`pcdd` package from PyPI](https://pypi.org/project/pcdd/) with uv (recommended) or [pipx](https://pipx.pypa.io/). Both put the `pcdd` command on your `PATH` in an isolated environment:
+
+```sh
+uv tool install pcdd
 # or
-pipx install git+https://github.com/aledepaoligampel/pcdd
+pipx install pcdd
 ```
 
 If you don't have uv, install it with `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh` (see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for Windows and other options). For pipx, use `brew install pipx && pipx ensurepath`. Open a new terminal afterwards so `pcdd` is on your `PATH`.
 
-You can also install from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
+You can also install the latest `main` with `uv tool install pcdd --from git+https://github.com/aledepaoligampel/pcdd`, or from a local checkout with `uv tool install /path/to/pcdd` or `pipx install /path/to/pcdd`. To upgrade, run `uv tool upgrade pcdd` or `pipx upgrade pcdd`.
 
 Then work from the project where you want to use PCDD:
 
