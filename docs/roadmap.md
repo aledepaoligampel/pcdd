@@ -4,7 +4,7 @@ Estado global de los changes. Las tareas de cada change se mantienen en su docum
 
 | Change | Alcance | Estado |
 |---|---|---|
-| public-release | Auditoría, repositorio público, PyPI y sitio con instalador en pcdd.dev | En curso; diseño de la landing cerrado y auditoría del historial hecha |
+| public-release | Auditoría, repositorio público, PyPI, sitio con instalador en pcdd.dev y lanzador npm | Completado y aceptado; PyPI 0.4.0 y `@pcdd-dev/cli` 0.4.0 publicados con trusted publishing; pcdd.dev 100/100 en PageSpeed; install.sh verificado en macOS y Linux; 79 tests |
 | packaging | `pyproject.toml`, licencia MIT, código en `src/pcdd_toolkit/` e instalación con uv/pipx desde Git | Completado; 57 tests, dos revisiones PASS e instalación desde GitHub verificada con uv y pipx; aceptación delegada autorizada |
 | progreso-visible | Tareas nativas sincronizadas cuando estén disponibles y progreso visible en el chat | Completado y aceptado; 53 tests; panel nativo verificado en Claude Code; operaciones largas y bloqueos sin observar |
 | v0-1 | Kit local, adaptadores, instalación segura y progreso con tiempo | Completado; 53 tests y pilotos en clientes reales; cierre delegado autorizado por el usuario |
