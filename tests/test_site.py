@@ -3,6 +3,7 @@ import gzip
 import hashlib
 import json
 import re
+import shutil
 import struct
 import subprocess
 import sys
@@ -87,8 +88,13 @@ class SiteTests(unittest.TestCase):
 
     def test_pages_work_under_the_strict_content_security_policy(self):
         headers = (SITE / "_headers").read_text(encoding="utf-8")
-        self.assertIn("script-src 'self';", headers)
+        # Cloudflare Web Analytics injects its beacon; it is the only third party allowed.
+        self.assertIn("script-src 'self' https://static.cloudflareinsights.com;", headers)
+        self.assertIn("connect-src 'self' https://cloudflareinsights.com;", headers)
+        self.assertNotIn("api.github.com", headers)
         self.assertIn("style-src 'self';", headers)
+        self.assertIn("Strict-Transport-Security: max-age=31536000; includeSubDomains", headers)
+        self.assertIn("Cross-Origin-Opener-Policy: same-origin", headers)
         for path in PAGES.values():
             parsed = outline(path)
             self.assertEqual(parsed.inline_scripts, [], path)
@@ -157,6 +163,55 @@ class SiteTests(unittest.TestCase):
         self.assertIn('<meta name="robots" content="noindex">', not_found)
         self.assertEqual(outline(SITE / "404.html").inline_scripts, [])
         self.assertTrue((SITE / "llms.txt").read_text(encoding="utf-8").startswith("# PCDD\n\n> "))
+
+    def test_star_count_is_read_from_the_same_origin(self):
+        script = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
+        self.assertIn("fetch('/api/stars')", script)
+        self.assertNotIn("api.github.com", script)
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_stars_function_never_fails_and_caches(self):
+        harness = r"""
+const mod = await import(process.argv[1]);
+const store = new Map();
+globalThis.caches = { default: {
+  match: async (req) => store.get(req.url),
+  put: async (req, res) => { store.set(req.url, res); },
+} };
+const run = async (upstream) => {
+  store.clear();
+  let calls = 0;
+  globalThis.fetch = async (url, init) => { calls += 1; return upstream(url, init); };
+  const pending = [];
+  const ctx = { request: new Request('https://pcdd.dev/api/stars?x=1'), env: {},
+                waitUntil: (p) => pending.push(p) };
+  const first = await mod.onRequestGet(ctx);
+  await Promise.all(pending);
+  const second = await mod.onRequestGet(ctx);
+  return { status: first.status, body: await first.json(), cache: first.headers.get('cache-control'),
+           type: first.headers.get('content-type'), calls, cached: (await second.json()).stars };
+};
+const ok = await run(async (url, init) => new Response(JSON.stringify({ stargazers_count: 42 }),
+  { status: url.startsWith('https://api.github.com/repos/aledepaoligampel/pcdd') && init.headers['User-Agent'] ? 200 : 500 }));
+const limited = await run(async () => new Response('{}', { status: 403 }));
+const down = await run(async () => { throw new Error('offline'); });
+console.log(JSON.stringify({ ok, limited, down }));
+"""
+        source = ROOT / "functions" / "api" / "stars.js"
+        result = subprocess.run(["node", "--input-type=module", "-e", harness, source.as_uri()],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        out = json.loads(result.stdout)
+        self.assertEqual(out["ok"]["status"], 200)
+        self.assertEqual(out["ok"]["body"], {"stars": 42})
+        self.assertEqual(out["ok"]["calls"], 1)  # the second request is served from the cache
+        self.assertEqual(out["ok"]["cached"], 42)
+        self.assertIn("max-age=3600", out["ok"]["cache"])
+        self.assertTrue(out["ok"]["type"].startswith("application/json"))
+        for case in ("limited", "down"):
+            self.assertEqual(out[case]["status"], 200, case)
+            self.assertEqual(out[case]["body"], {"stars": None}, case)
+            self.assertIn("max-age=300", out[case]["cache"], case)
 
     def test_context7_configuration(self):
         config = json.loads((ROOT / "context7.json").read_text(encoding="utf-8"))

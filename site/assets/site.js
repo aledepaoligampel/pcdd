@@ -58,11 +58,11 @@
     blocks.forEach(function (el) { io.observe(el); });
   }
 
-  // GitHub stars; the counter stays hidden if the API fails or there are none yet.
-  fetch('https://api.github.com/repos/aledepaoligampel/pcdd')
+  // GitHub stars via the same-origin cached endpoint; hidden if unknown or there are none yet.
+  fetch('/api/stars')
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
     .then(function (j) {
-      var n = j.stargazers_count;
+      var n = j.stars;
       if (typeof n !== 'number' || n < 1) return;
       var t = n >= 1000 ? (Math.round(n / 100) / 10) + 'k' : String(n);
       d.querySelectorAll('[data-stars]').forEach(function (el) { el.textContent = t; el.hidden = false; });
