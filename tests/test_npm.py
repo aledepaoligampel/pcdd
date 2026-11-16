@@ -19,7 +19,8 @@ VERSION = re.search(r"__version__ = ['\"]([^'\"]+)", (ROOT / "src" / "pcdd_toolk
 class NpmPackageTests(unittest.TestCase):
     def test_manifest(self):
         manifest = json.loads((NPM / "package.json").read_text(encoding="utf-8"))
-        self.assertEqual(manifest["name"], "pcdd")
+        self.assertEqual(manifest["name"], "@pcdd-dev/cli")  # npm refuses "pcdd" (too similar to "add")
+        self.assertEqual(manifest["publishConfig"], {"access": "public"})
         self.assertEqual(manifest["version"], VERSION)  # runs exactly this PyPI release
         self.assertEqual(manifest["bin"], {"pcdd": "bin/pcdd.js"})
         self.assertEqual(manifest["files"], ["bin/pcdd.js"])
@@ -100,6 +101,7 @@ class NpmLauncherTests(unittest.TestCase):
         self.assertIn("uv", result.stderr)
         self.assertIn("https://docs.astral.sh/uv/", result.stderr)
         self.assertIn("curl -fsSL https://pcdd.dev/install.sh | sh", result.stderr)
+        self.assertIn("npx @pcdd-dev/cli", result.stderr)
 
 
 if __name__ == "__main__":

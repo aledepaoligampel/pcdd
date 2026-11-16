@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Runs the PCDD command-line tool (a Python package on PyPI) through uv, pinned to
 // the release that matches this package's version:
-//   npx pcdd@X.Y.Z <args>  ->  uv tool run pcdd@X.Y.Z <args>
+//   npx @pcdd-dev/cli@X.Y.Z <args>  ->  uv tool run pcdd@X.Y.Z <args>
 'use strict';
 
 const { spawn } = require('node:child_process');
@@ -32,7 +32,7 @@ function missingUv() {
     'Install PCDD with uv in one step:',
     '  curl -fsSL https://pcdd.dev/install.sh | sh',
     '',
-    'Or install uv yourself and run npx pcdd again:',
+    'Or install uv yourself and run npx @pcdd-dev/cli again:',
     '  macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh',
     '  Windows:     powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
     '',

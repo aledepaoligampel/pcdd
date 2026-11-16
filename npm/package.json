@@ -1,5 +1,5 @@
 {
-  "name": "pcdd",
+  "name": "@pcdd-dev/cli",
   "version": "0.4.0",
   "description": "Progressive Change-Driven Development for AI coding agents. Runs the PCDD CLI from PyPI through uv.",
   "keywords": ["ai", "agents", "codex", "claude-code", "workflow", "cli", "pcdd"],
@@ -18,6 +18,9 @@
   "files": [
     "bin/pcdd.js"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18"
   }
