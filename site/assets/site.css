@@ -69,6 +69,7 @@ h1 span{display:block}@media (min-width:900px){h1 span{white-space:nowrap}}
 .cmd button{flex:0 0 auto;min-height:44px;min-width:84px;padding:0 16px;border:0;border-radius:10px;background:var(--acc);color:var(--bg);font:600 14px var(--sans);cursor:pointer}
 .cmd button[hidden]{display:none}
 .alt{margin:0;font-family:var(--mono);font-size:13px;color:var(--dim)}
+.alt span{white-space:nowrap}
 .p{color:var(--dim)}
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .beam::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),transparent 0 62%,var(--acc) 80%,transparent 92%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;pointer-events:none}

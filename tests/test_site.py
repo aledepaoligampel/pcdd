@@ -153,6 +153,14 @@ class SiteTests(unittest.TestCase):
             if "uses:" in line:
                 self.assertRegex(line, r"@[0-9a-f]{40} # v", line)
 
+    def test_install_alternatives_do_not_break_inside_a_command(self):
+        css = (SITE / "assets" / "site.css").read_text(encoding="utf-8")
+        self.assertIn(".alt span{white-space:nowrap}", css)
+        for path in PAGES.values():
+            html = path.read_text(encoding="utf-8")
+            self.assertIn("<span>npx @pcdd-dev/cli</span>", html)
+            self.assertIn("<span>uv tool install pcdd</span>", html)
+
     def test_search_and_sharing_metadata(self):
         for lang, path in PAGES.items():
             parsed = outline(path)
