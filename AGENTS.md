@@ -1,8 +1,8 @@
 # PCDD — Project conventions
 
 - Maintain agent instructions and distributed templates in English. The public README is in English; other project documentation stays in Spanish. Code, identifiers, tests, and commit messages use English.
-- Feature status lives in `docs/roadmap.md`; work records live in `pcdd/changes/<change>.md`. Load only relevant specs/tasks and continuation notes; consult Log when a decision needs clarification.
-- Architecture and distribution decisions: `docs/design.md`. Usage: `USAGE.md`. Verification evidence: `docs/verification.md`.
+- Feature status lives in `docs/roadmap.md`; work records live in `pcdd/changes/<change>.md`, kept local and not versioned. Load only relevant specs/tasks and continuation notes; consult Log when a decision needs clarification.
+- Architecture and distribution decisions: `docs/design.md`. Usage: `USAGE.md`. Verification evidence: `docs/verification.md`, kept local and not versioned.
 - Use this checkout's CLI: `python3 pcdd.py` from the repository root (add `--json` for machine-readable output). Do not rely on a different PCDD installation from PATH.
 - Runtime: Python 3.9+, no runtime dependencies. Public CLI tests use temporary projects; there is no database gate. Gate commands live in `.pcdd/config.json`.
 - Commits require explicit authorization; implementation or spec approval alone does not authorize committing. Follow the high-risk checkpoint in the installed core when applicable.

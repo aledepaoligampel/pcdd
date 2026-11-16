@@ -15,7 +15,7 @@ Repositorio independiente en `/path/to/pcdd`. El CLI administra instrucciones ve
 
 `update --dry-run` muestra el plan sin escribir. `update` valida todos los conflictos antes de aplicar. Un archivo administrado modificado requiere resolución explícita; sin fusiones automáticas silenciosas. La reversión solo restaura archivos administrados cuando hacerlo no borra cambios posteriores del cliente.
 
-Actualizar el ejecutable no actualiza por sí solo los repositorios. Cada proyecto fija su versión. El ejecutable se distribuye como paquete Python (`pyproject.toml`, nombre `pcdd`, código en `src/pcdd_toolkit/` con assets y locales como datos del paquete) y se instala con `uv tool install` o `pipx` desde Git o un checkout; no hay publicación en un registro. Se descartó por ahora un wrapper npm: igual requeriría Python y duplicaría la distribución. El paquete importable no se llama `pcdd` porque `pcdd/changes/` ocupa ese nombre en la raíz del repositorio. `pcdd.py` queda como lanzador del checkout.
+Actualizar el ejecutable no actualiza por sí solo los repositorios. Cada proyecto fija su versión. El ejecutable se distribuye como paquete Python (`pyproject.toml`, nombre `pcdd`, código en `src/pcdd_toolkit/` con assets y locales como datos del paquete) y se instala con `uv tool install` o `pipx` desde Git o un checkout; no hay publicación en un registro. Se descartó por ahora un wrapper npm: igual requeriría Python y duplicaría la distribución. El paquete importable no se llama `pcdd` porque `pcdd/changes/` ocupa ese nombre en la raíz de los proyectos, incluido este checkout, donde es local y no se versiona. `pcdd.py` queda como lanzador del checkout.
 
 ## Flujo y contexto
 

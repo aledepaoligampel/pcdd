@@ -75,7 +75,7 @@ make ready
 make package-check  # builds and installs a wheel in a temporary venv; needs network
 ```
 
-See [usage and recovery](USAGE.md), [design](docs/design.md), [verification](docs/verification.md), and the [roadmap](docs/roadmap.md) for details. These project documents are currently in Spanish.
+See [usage and recovery](USAGE.md), [design](docs/design.md), and the [roadmap](docs/roadmap.md) for details. These project documents are currently in Spanish.
 
 PCDD is released under the [MIT License](LICENSE).
 
