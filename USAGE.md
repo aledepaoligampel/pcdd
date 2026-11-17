@@ -100,7 +100,7 @@ pcdd rollback
 
 Se rechazan archivos administrados modificados o ausentes, symlinks en rutas administradas y manifiestos incompatibles. Resolvé un conflicto explícitamente guardando tus personalizaciones en instrucciones del proyecto y restaurando la versión administrada original si decidís continuar. No hay `--force` ni merge automático.
 
-`rollback` revierte la última instalación/actualización y se niega si algún archivo afectado recibió modificaciones posteriores. Conserva documentos de changes y tiempos. Las carpetas vacías pueden permanecer. Solo se mantiene una reversión, no un historial ilimitado ni desinstalador completo.
+`rollback` revierte la última instalación o actualización que cambió archivos, y se niega si alguno de esos archivos recibió modificaciones posteriores. Un `update` o `init` sin cambios no reemplaza esa reversión: si la última operación con cambios fue el `init`, `rollback` retira la instalación. Conserva documentos de changes. Las carpetas vacías pueden permanecer. Solo se mantiene una reversión, no un historial ilimitado ni desinstalador completo.
 
 Si un proceso se interrumpe, `doctor` informa la transacción pendiente. Ejecutá `pcdd recover` para restaurar los archivos previos, no para continuar una actualización parcial. Si queda `.pcdd/lock`, verificá que el PID guardado no esté ejecutando una operación PCDD antes de borrar manualmente ese archivo. No borres locks de procesos activos. Archivos temporales `.pcdd-write-*` de procesos muertos pueden quedar; no se consideran archivos del cliente ni bloquean futuras escrituras.
 
