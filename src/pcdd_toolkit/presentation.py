@@ -176,13 +176,8 @@ class Presentation:
         elif command == 'language':
             safe_print(self.text('language_saved' if data['saved'] else 'language_current',
                                  language=data['language'], path=data['path']))
-        elif command == 'time':
-            safe_print(self.text('progress', done=data['completed'], total=data['total'],
-                                 seconds=data['recorded_seconds']))
-            if data['open_interval_seconds'] is not None:
-                safe_print(self.text('open_interval', seconds=data['open_interval_seconds']))
-            if data['incomplete_intervals']:
-                safe_print(self.text('incomplete', count=data['incomplete_intervals']))
+        elif command == 'status':
+            safe_print(self.text('progress', done=data['completed'], total=data['total']))
             safe_print(self.text('acceptance'))
 
     def error(self, error, code='conflict'):
@@ -243,7 +238,7 @@ def build_parser(ui, version):
     parser.add_argument('--version', action=Version, nargs=0, help=ui.text('version_help'))
     parser.add_argument('--project', default='.', help=ui.text('project_help'))
     subs = parser.add_subparsers(dest='command', required=True)
-    for command in ('init', 'update', 'doctor', 'rollback', 'recover', 'new', 'time', 'language'):
+    for command in ('init', 'update', 'doctor', 'rollback', 'recover', 'new', 'status', 'language'):
         child = subs.add_parser(command, help=ui.text('command_' + command),
                                 description=ui.text('command_' + command))
         if command in ('init', 'update'):
@@ -251,9 +246,7 @@ def build_parser(ui, version):
             child.add_argument('--adapters', help=ui.text('adapters_help'))
         elif command == 'new':
             child.add_argument('change', help=ui.text('change_help'))
-        elif command == 'time':
-            child.add_argument('action', choices=['start', 'pause', 'stop', 'abandon', 'status'],
-                               help=ui.text('time_help'))
+        elif command == 'status':
             child.add_argument('change', help=ui.text('change_help'))
         elif command == 'language':
             child.add_argument('language', nargs='?', choices=['es', 'en', 'auto'],

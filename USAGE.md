@@ -61,12 +61,10 @@ Codex y Antigravity usan el mismo `AGENTS.md` y los mismos cuatro skills en `.ag
 
 ```sh
 pcdd new primera-feature
-pcdd time start primera-feature
-pcdd time status primera-feature
-pcdd time pause primera-feature
+pcdd status primera-feature
 ```
 
-El agente redacta las specs y actualiza `pcdd/changes/primera-feature.md`. Tasks usa líneas `- [ ] T1 (S1) descripción`; `>` en curso, `!` bloqueada, `x` completada. El CLI valida IDs y estados y devuelve JSON con conteo y tiempo para que el agente lo comunique. No infiere aprobación humana del porcentaje. El resumen del agente usa el formato **PCDD · 2/3 tareas completadas · 2 min 48 s**, sin aclaraciones sobre el inicio o la pausa del reloj.
+El agente redacta las specs y actualiza `pcdd/changes/primera-feature.md`. Tasks usa líneas `- [ ] T1 (S1) descripción`; `>` en curso, `!` bloqueada, `x` completada. El CLI valida IDs y estados y devuelve JSON con el conteo para que el agente lo comunique. No infiere aprobación humana del porcentaje. PCDD no mide tiempo de trabajo. El comando `pcdd time` se eliminó; los archivos `.pcdd/time/*.json` de versiones anteriores ya no se leen y podés borrarlos.
 
 Al empezar o retomar un change y cuando cambia el estado de una tarea, el agente muestra un bloque breve en el chat. Ejemplo ilustrativo:
 
@@ -78,7 +76,7 @@ Al empezar o retomar un change y cuando cambia el estado de una tarea, el agente
 >
 > Siguiente paso: verificar el comportamiento implementado.
 
-Los IDs, estados y conteos salen del documento del change mediante el CLI. En listas largas se muestran solo las tareas relevantes, con el conteo total. Durante operaciones largas, el agente explica qué sigue ejecutándose y qué resultado falta; ante un bloqueo, indica qué puede resolverlo. Al cerrar el tramo agrega el tiempo medido. Las tareas completas no sustituyen tu prueba y confirmación del resultado.
+Los IDs, estados y conteos salen del documento del change mediante el CLI. En listas largas se muestran solo las tareas relevantes, con el conteo total. Durante operaciones largas, el agente explica qué sigue ejecutándose y qué resultado falta; ante un bloqueo, indica qué puede resolverlo. Las tareas completas no sustituyen tu prueba y confirmación del resultado.
 
 Además del bloque en el chat, el agente usa las herramientas de tareas nativas que exponga la sesión para reflejar las tareas del change al empezar o retomar y en cada transición. El documento se actualiza primero; el panel conserva los IDs de PCDD en las etiquetas y no mantiene otro plan. Si el cliente no admite un estado, por ejemplo bloqueada, la etiqueta o descripción lo expresa. Si faltan las herramientas, el agente avisa al inicio que mostrará progreso en texto; si fallan, comunica la limitación y continúa con el documento y el bloque del chat.
 
@@ -89,8 +87,6 @@ CLAUDE_CODE_ENABLE_TODO_TOOLS=1 claude
 ```
 
 La [documentación oficial de Claude Code](https://code.claude.com/docs/en/tools-reference.md#task-tool-availability) describe la disponibilidad por modelo y esta opción. La prueba local con Claude Code 2.1.323 verificó llamadas reales a `TaskCreate`, `TaskUpdate` y `TaskList`, con transición pendiente → en curso → completada. Fue una ejecución no interactiva: la visualización del panel requiere comprobarla en el cliente. La disponibilidad en Codex también depende de las herramientas expuestas en esa sesión; instalar PCDD no las habilita.
-
-`start` inicia un intervalo; `pause` y `stop` lo cierran. El tiempo cerrado y el intervalo abierto se muestran separados. Al abandonar un chat con intervalo abierto, usar `pcdd time abandon primera-feature` al retomar: registra incompletitud sin sumar tiempo desconocido. Después `start`. No hay detección automática de cierre del chat ni estimación del tiempo restante.
 
 ## Actualizar y recuperar
 
@@ -142,10 +138,10 @@ La salida por defecto ahora es humana. Los scripts y agentes deben agregar `--js
 ```sh
 pcdd init --dry-run --json
 pcdd --json doctor
-pcdd time status primera-feature --json
+pcdd status primera-feature --json
 ```
 
-Las claves y mensajes de error de máquina permanecen en inglés e independientes del idioma. Errores JSON se escriben en stdout como un único objeto `error` (code/message), con exit code no cero y sin texto adicional en stderr. Help y version también tienen envoltorio JSON al usar --json; el contenido de help está traducido. `acceptance` en time usa el código `requires_user_confirmation`. Los resultados de init/update se emiten solo cuando terminó la operación; una falla no produce un informe de éxito previo.
+Las claves y mensajes de error de máquina permanecen en inglés e independientes del idioma. Errores JSON se escriben en stdout como un único objeto `error` (code/message), con exit code no cero y sin texto adicional en stderr. Help y version también tienen envoltorio JSON al usar --json; el contenido de help está traducido. `acceptance` en status usa el código `requires_user_confirmation`. Los resultados de init/update se emiten solo cuando terminó la operación; una falla no produce un informe de éxito previo.
 
 Se mantiene el esquema 1. La v0.4.0 reconoce el inventario de dos skills de v0.1.0/v0.2.0 y el de cuatro de v0.3.0; actualiza al inventario vigente de cuatro skills al ejecutar `update` (también al repetir `init`). `pcdd update --dry-run` muestra los archivos nuevos sin escribir. Si ya existe un archivo no administrado en el destino de un skill nuevo, la operación se rechaza sin sobrescribirlo, incluso si su contenido coincide. `rollback` restaura el inventario anterior y retira los skills agregados, siempre que no hayan recibido modificaciones posteriores. No uses un ejecutable anterior sobre la instalación ampliada: para volver, ejecutá primero `rollback` con el CLI nuevo. Actualizar el ejecutable no modifica por sí solo proyectos anteriores.
 
@@ -155,7 +151,7 @@ Después de init, abrí una sesión nueva de un cliente compatible en la carpeta
 
 ## Seguir en otra sesión
 
-Pedile al agente **«Guardá el avance para seguir en una sesión nueva»**. Guardará el punto de continuación en el documento del change, con el trabajo pendiente y la evidencia relevante; cerrará el intervalo de tiempo sin hacer un commit automático.
+Pedile al agente **«Guardá el avance para seguir en una sesión nueva»**. Guardará el punto de continuación en el documento del change, con el trabajo pendiente y la evidencia relevante, sin hacer un commit automático.
 
 Abrí una sesión nueva en el mismo proyecto y pedile **«Continuá desde donde quedamos»**. Si hay varios changes activos, indicá cuál. El agente debe contrastar la nota con el estado actual y conservar las aprobaciones anteriores. Son instrucciones de conversación, no comandos `pcdd`.
 
@@ -183,7 +179,7 @@ Usá el ejecutable de este checkout para no depender de otra versión en PATH:
 
 ```sh
 python3 pcdd.py doctor
-python3 pcdd.py --json time status self-hosting
+python3 pcdd.py --json status self-hosting
 ```
 
 Las fuentes distribuibles viven en `src/pcdd_toolkit/assets/`; el código del CLI, en `src/pcdd_toolkit/`, y `pcdd.py` es solo el lanzador del checkout. Las copias de `.pcdd/core.md`, `.agents/skills/` y `.claude/skills/` son archivos administrados: no se editan a mano. Durante un cambio de instrucciones se trabaja sobre las fuentes conservando la versión instalada. Después de validar el cambio, actualizar explícitamente esta instalación dentro del alcance autorizado:
@@ -198,7 +194,7 @@ python3 pcdd.py doctor
 
 Abrí otra sesión para cargar los skills actualizados. `doctor` comprueba la instalación contra su manifiesto, no que coincida con fuentes todavía en desarrollo; el preview de `update` muestra esa diferencia. No hay autoactualización ni un enlace que cambie silenciosamente las instrucciones mientras se desarrolla.
 
-Los changes existentes conservan sus citas y evidencia. Los intervalos se registran desde que se inicia el reloj, sin reconstruir tiempo anterior; una pausa para esperar al usuario debe cerrar el intervalo. Los locks, journals y temporales de instalación siguen excluidos de Git, mientras que la configuración, manifiesto y snapshots forman parte de la instalación del proyecto. Autoincorporarse no autoriza commits ni publicaciones.
+Los changes existentes conservan sus citas y evidencia. Los locks, journals y temporales de instalación siguen excluidos de Git, mientras que la configuración, manifiesto y snapshots forman parte de la instalación del proyecto. Autoincorporarse no autoriza commits ni publicaciones.
 
 ## Probar Antigravity
 

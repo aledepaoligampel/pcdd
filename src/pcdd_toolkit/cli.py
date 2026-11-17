@@ -3,12 +3,10 @@ import argparse
 import base64
 import hashlib
 import json
-import math
 import os
 from pathlib import Path
 import re
 import sys
-import time
 import tempfile
 from contextlib import contextmanager
 from . import __version__
@@ -298,48 +296,14 @@ def progress(project, name):
     return tasks
 
 
-def timing(project, args):
+def status(project, args):
     project.pending()
     installation(project)
     tasks = progress(project, args.change)
-    filename = f'.pcdd/time/{args.change}.json'
-    state = project.load(filename) or {'schema': 1, 'seconds': 0, 'sessions': 0,
-                                     'active': None, 'incomplete': 0}
-    if state.get('schema') != 1 or any(
-            not isinstance(state.get(key), (int, float)) or
-            not math.isfinite(state[key]) or state[key] < 0
-            for key in ('seconds', 'sessions', 'incomplete')):
-        raise Conflict('Invalid time record')
-    if state.get('active') is not None and (
-            not isinstance(state['active'], (int, float)) or
-            not math.isfinite(state['active']) or state['active'] < 0):
-        raise Conflict('Invalid open interval')
-    now = time.time()
-    if args.action == 'start':
-        if state['active'] is not None:
-            raise Conflict('Open interval; stop if accurate, or abandon if interrupted')
-        state['active'] = now
-        state['sessions'] += 1
-    elif args.action in ('stop', 'pause'):
-        if state['active'] is None:
-            raise Conflict('No open interval')
-        state['seconds'] += max(0, now - state['active'])
-        state['active'] = None
-    elif args.action == 'abandon':
-        if state['active'] is None:
-            raise Conflict('No open interval')
-        state['active'] = None
-        state['incomplete'] += 1
-    if args.action != 'status':
-        project.write(filename, json_bytes(state))
     return {'change': args.change,
-                      'completed': sum(t['state'] == 'x' for t in tasks.values()),
-                      'total': len(tasks), 'tasks': tasks,
-                      'recorded_seconds': round(state['seconds'], 2),
-                      'open_interval_seconds': round(max(0, now - state['active']), 2)
-                      if state['active'] is not None else None,
-                      'intervals': state['sessions'], 'incomplete_intervals': state['incomplete'],
-                      'acceptance': 'requires_user_confirmation'}
+            'completed': sum(t['state'] == 'x' for t in tasks.values()),
+            'total': len(tasks), 'tasks': tasks,
+            'acceptance': 'requires_user_confirmation'}
 
 
 def main():
@@ -370,8 +334,7 @@ def main():
 
 def run_project(args, ui):
     project = Project(args.project)
-    readonly = getattr(args, 'dry_run', False) or args.command == 'doctor' or (
-        args.command == 'time' and args.action == 'status')
+    readonly = getattr(args, 'dry_run', False) or args.command in ('doctor', 'status')
     if args.command in ('init', 'update'):
         ui.logo()
 
@@ -401,7 +364,7 @@ def run_project(args, ui):
             project.write(name, (ASSETS / 'change.md').read_bytes().replace(b'{{name}}', args.change.encode()))
             return {'path': name}
         else:
-            return timing(project, args)
+            return status(project, args)
     with ui.step(args.command):
         if readonly:
             report = execute()

@@ -36,7 +36,7 @@ PCDD uses specifications and adapts process to the work. Its concrete choices ar
 - **Four skills:** `pcdd-work`, `pcdd-review`, `pcdd-commit`, and `pcdd-commit-review`.
 - **Installation and maintenance:** preview changes, check an installation, update managed files, and recover or roll back transactions.
 - **Change records:** specifications, task states, verification evidence, and continuation notes.
-- **Progress and time:** task counts and explicitly recorded work intervals, available as human-readable output or JSON.
+- **Progress:** task counts per change, available as human-readable output or JSON.
 - **English and Spanish CLI output.** Agent responses follow the user's language; project documents follow the project's conventions.
 
 ## Try it
@@ -91,4 +91,4 @@ PCDD is released under the [MIT License](LICENSE).
 
 PCDD v0.4 is an early toolkit. Antigravity installation is covered by CLI tests, with a discovery and continuation pilot in Antigravity CLI. Behavior in the graphical IDE has not been verified; check discovery in the client you use. The CLI manages files and records; the instructions guide agent behavior. It does not technically enforce every workflow rule or guarantee that a model follows it.
 
-Task counts measure completed tasks, not effort. Recorded time covers explicitly opened and closed intervals, not necessarily the full development duration. Project checks and human acceptance remain necessary.
+Task counts measure completed tasks, not effort. Project checks and human acceptance remain necessary.

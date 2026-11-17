@@ -5,7 +5,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import time
 import unittest
 
 CLI = Path(__file__).resolve().parents[1] / 'pcdd.py'
@@ -47,7 +46,6 @@ class CliTests(unittest.TestCase):
         cases = [
             ('.pcdd/config.json', ('update', '--dry-run')),
             ('.pcdd/installation.json', ('doctor',)),
-            ('.pcdd/time/example.json', ('time', 'status', 'example')),
             ('.pcdd/last-update.json', ('rollback',)),
         ]
         for name, command in cases:
@@ -168,29 +166,38 @@ class CliTests(unittest.TestCase):
         self.run_cli('recover', ok=False)
         self.assertEqual(target.read_text(), 'Private')
 
-    def test_time_and_task_progress_are_observable(self):
+    def test_status_reports_task_progress_without_writes(self):
         self.run_cli('init')
         self.run_cli('new', 'example')
         change = self.root / 'pcdd/changes/example.md'
         change.write_text('# Example\n\n## Tasks\n\n- [x] T1 (S1) Done\n'
                           '- [>] T2 (S2) Working\n\n## Evidence\nT1 passed\n')
-        report = json.loads(self.run_cli('time', 'start', 'example').stdout)
-        self.assertEqual((report['completed'], report['total']), (1, 2))
-        self.run_cli('time', 'start', 'example', ok=False)
-        time.sleep(0.02)
-        report = json.loads(self.run_cli('time', 'pause', 'example').stdout)
-        self.assertGreater(report['recorded_seconds'], 0)
-        self.assertIsNone(report['open_interval_seconds'])
-        closed = report['recorded_seconds']
-        self.run_cli('time', 'start', 'example')
-        report = json.loads(self.run_cli('time', 'abandon', 'example').stdout)
-        self.assertEqual(report['recorded_seconds'], closed)
-        self.assertEqual(report['incomplete_intervals'], 1)
         before = self.snapshot()
-        self.run_cli('time', 'status', 'example')
+        report = json.loads(self.run_cli('status', 'example').stdout)
+        self.assertEqual(before, self.snapshot())
+        self.assertEqual((report['change'], report['completed'], report['total']), ('example', 1, 2))
+        self.assertEqual(report['acceptance'], 'requires_user_confirmation')
+        self.assertNotIn('recorded_seconds', report)
+        (self.root / '.pcdd/lock').write_text('other-process')
+        before = self.snapshot()
+        self.run_cli('status', 'example')
         self.assertEqual(before, self.snapshot())
         change.write_text('## Tasks\n- [x] T1 duplicate\n- [ ] T1 duplicate\n')
-        self.run_cli('time', 'status', 'example', ok=False)
+        self.run_cli('status', 'example', ok=False)
+
+    def test_time_command_is_removed_and_old_records_are_untouched(self):
+        self.run_cli('init')
+        self.run_cli('new', 'example')
+        record = self.root / '.pcdd/time/example.json'
+        record.parent.mkdir(parents=True)
+        for content in ('not json', json.dumps({'schema': 1, 'seconds': 10, 'sessions': 1,
+                                                'active': 1.0, 'incomplete': 0})):
+            record.write_text(content)
+            before = self.snapshot()
+            self.run_cli('time', 'status', 'example', ok=False)
+            self.run_cli('status', 'example')
+            self.run_cli('doctor')
+            self.assertEqual(before, self.snapshot())
 
     def test_existing_lock_blocks_writes(self):
         self.run_cli('init')
@@ -207,14 +214,6 @@ class CliTests(unittest.TestCase):
         self.run_cli('init')
         self.assertEqual(foreign.read_text(), 'User file')
         self.run_cli('doctor')
-
-    def test_invalid_timer_is_not_reported_as_real_work(self):
-        self.run_cli('init')
-        self.run_cli('new', 'example')
-        self.run_cli('time', 'start', 'example')
-        state = self.root / '.pcdd/time/example.json'
-        state.write_text('{"schema":1,"seconds":-100,"sessions":1,"active":null,"incomplete":0}')
-        self.run_cli('time', 'status', 'example', ok=False)
 
     def test_doctor_reports_stale_or_active_lock(self):
         self.run_cli('init')

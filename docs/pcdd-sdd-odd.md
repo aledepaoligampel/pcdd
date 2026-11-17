@@ -26,6 +26,6 @@ Los enfoques pueden compartir requisitos, pruebas, tareas y revisión humana. La
 
 ## Capacidades y límites
 
-El CLI instala y actualiza instrucciones, valida archivos, cuenta tareas y registra intervalos explícitos de trabajo. Las instrucciones guían decisiones del agente. No son una barrera técnica que garantice obediencia de cualquier modelo ni ejecutan por sí solas todas las revisiones.
+El CLI instala y actualiza instrucciones, valida archivos y cuenta tareas. Las instrucciones guían decisiones del agente. No son una barrera técnica que garantice obediencia de cualquier modelo ni ejecutan por sí solas todas las revisiones.
 
-El conteo de tareas no mide esfuerzo y el reloj no reconstruye tiempo sin registrar. No se ha demostrado una ventaja comparativa en tokens, velocidad o calidad frente a otras configuraciones de SDD u ODD. El valor propuesto es conservar suficiente estructura para entender, retomar y verificar cada cambio.
+El conteo de tareas no mide esfuerzo. No se ha demostrado una ventaja comparativa en tokens, velocidad o calidad frente a otras configuraciones de SDD u ODD. El valor propuesto es conservar suficiente estructura para entender, retomar y verificar cada cambio.
