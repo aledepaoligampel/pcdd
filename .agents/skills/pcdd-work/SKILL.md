@@ -5,7 +5,7 @@ description: Define, implement, or resume a substantial change in a PCDD project
 
 # PCDD Work
 
-Consult `.pcdd/core.md` if you have not read it yet. Do not reread the entire project. Use `--json` to consume CLI results, for example `pcdd --json time status <name>`; human output is not a parsing contract.
+Consult `.pcdd/core.md` if you have not read it yet. Do not reread the entire project. Use `--json` to consume CLI results, for example `pcdd --json status <name>`; human output is not a parsing contract.
 
 Follow the language policy in the core: respond in the user's language, write project content in its agreed language, and preserve quotations verbatim. Recognize save/resume requests by meaning in the user's language; no exact phrase is required. Translate user-facing examples below as appropriate. Keep `## Tasks`, task IDs, state markers, and command syntax unchanged because the CLI parses them. Preserve existing document headings; the continuation section may be called `Continuation`, `Continuación`, or the project's equivalent.
 
@@ -16,15 +16,14 @@ Follow the language policy in the core: respond in the user's language, write pr
 - Before coding, obtain approval for new specs and record the quotation in Log. Link tasks to S#, with evidence and a commit when one exists. Do not invent hashes.
 - Task format: `- [ ] T1 (S1) description`. States: space for pending, `>` in progress, `!` blocked, `x` completed. IDs must be unique. Keep only tasks in `## Tasks`; put detailed evidence in the evidence section.
 - Complete a task when it meets its criterion and has evidence. Explain scope when tasks are added; a changed denominator does not automatically mean regression.
-- Track time with `pcdd time start <name>`. Use `pause` or `stop` to close the interval before waiting for a reply or ending the turn. Tests and builds count as work; human waiting does not. Each start is an interval, not necessarily a chat session.
-- On resuming, consult `pcdd time status <name>`. If an interval from another session remains open and its end is unknown, use `abandon`, not `stop`: it remains incomplete and excluded from the total. Do not estimate missing time. Then start a new interval.
+- On resuming, consult `pcdd status <name>` for the task count.
 - Check the tools exposed in the current session for native task tracking, such as `update_plan` or Claude Code's `TaskCreate`, `TaskUpdate`, and `TaskList`. Use available tools at startup/resumption and after task state changes to mirror the change document, updating the document first. Preserve the PCDD IDs in task labels even when the client assigns its own IDs. Reconcile existing entries for this change instead of duplicating them; preserve unrelated tasks. Native task entries are a derived view, never an independent plan. Map only supported states faithfully; if a state such as blocked has no native equivalent, keep the exact state and blocker explicit in the label or description. Do not mark a blocked task completed to fit the client.
 - If native tools are absent, report at startup that progress will be shown in text. If a native update fails, report that limitation and continue with the document and chat block. Do not invent tools, equate Markdown lists with a native panel, or use goals, new sessions, background jobs, or external trackers as substitutes. Do not change client settings automatically. Tool calls verify task operations; visual rendering requires an interactive client check.
 - When starting or resuming and whenever task status changes, show a brief, separate progress block. Use a heading such as `**PCDD** · 4/6 tasks completed`, followed by a few short lines with task IDs, concise descriptions and explicit states (completed, in progress, pending, blocked). Include relevant completed tasks, the active task or tasks, and the next step or blocker. For a long task list, show only the relevant subset; the CLI count still covers all tasks. If no task is active, say what is pending, including human acceptance when appropriate. Update the change document first and obtain the count through the CLI. Its Tasks section is the source of truth; never maintain a second independent plan in chat or client tools.
 - During long operations, give occasional short updates naming the active task, what is still running, and what result or check is still pending. Do not invent intermediate percentages, repeat the full block for every command, or imply success before evidence arrives. Explain blockers plainly and name the next action that can resolve them. User-facing updates must not depend on a particular client's task UI.
-- When closing a work interval, append the confirmed closed total to the block heading, for example `**PCDD** · 4/6 tasks completed · 18 min`. Use minutes and seconds when useful; do not invent unmeasured time. Omit timer status and recording details such as “recorded since the timer started” or “timer paused”. Explain missing or incomplete timing separately only when it materially affects the result. Do not confuse task counts with effort, ETAs or final acceptance.
+- Do not confuse task counts with effort, ETAs or final acceptance.
 - Before pausing, update the continuation section with the next step, blocker, and current evidence. Preserve original decisions in Log; consult it only to resolve uncertainty.
-- At delivery, report behavior, validation, residual risks, recorded time and incomplete intervals, and human testing steps. Keep acceptance pending until the user tests and confirms.
+- At delivery, report behavior, validation, residual risks, and human testing steps. Keep acceptance pending until the user tests and confirms.
 
 If the CLI is missing or fails, report it; do not invent metrics or download tools automatically. Tasks can be maintained in Markdown while the limitation is resolved.
 
@@ -45,7 +44,7 @@ Keep the continuation section current when closing a unit of work; do not wait u
 - Leave a short account of the current task and concrete next action; implemented versus verified work; blockers; relevant specs and references to recorded approvals. Preserve quotations in Log without duplicating or reinterpreting them.
 - Record relevant modified files, branch/commit if available, checks run, and the state they covered. Distinguish uncommitted work from others' changes; do not invent ownership or hashes.
 - Include discarded attempts only when they prevent repeating a mistake, and your own active processes if they affect continuation. Do not copy the conversation, secrets, or complete tool output.
-- Close the known time interval before finishing; do not complete tasks or create commits merely to save progress. If saving or closing the timer fails, report what was not persisted.
+- Do not complete tasks or create commits merely to save progress. If saving fails, report what was not persisted.
 - Verify that the document was saved. Identify the change and say, in the user's language: “Progress saved. You can open a new session and ask: ‘Continue where we left off.’” Include the change name in that phrase if several efforts are active.
 
 ## Continue where work stopped
@@ -53,7 +52,6 @@ Keep the continuation section current when closing a unit of work; do not wait u
 - Identify the requested change. Use it if only one is active; ask which one if several are plausible. Do not choose solely by file date or read every Log.
 - Read the continuation section, relevant tasks, and their specs. Consult referenced evidence or approvals only when needed.
 - Compare the note with files, the diff, and Git status if available. Reconcile subsequent changes without overwriting them; ask only about contradictions that affect scope or authorization. Do not treat a test on different code as current evidence.
-- Check the timer: abandon a previous interval with no known end as incomplete, never add estimated time. Start a new interval when work resumes.
 - Preserve previous approvals and continue with the next action within their scope. Do not restart planning or ask to approve the same work again. Saving progress did not authorize new work.
 
 The agent may suggest switching sessions at a stable point if the conversation has accumulated irrelevant context. Do not assume access to a context percentage or promise to open a new session automatically. These phrases are requests to the agent, not CLI subcommands.

@@ -6,14 +6,14 @@
     "claude"
   ],
   "files": {
-    ".pcdd/core.md": "7843c93cfc9e065adadbb57aa63b4c95708965bc9d93a377700f1c0f3be93c5e",
+    ".pcdd/core.md": "781d86400d4771dec9838caa25863cb0511a6dcecc1ae84710992a08367a0f31",
     "AGENTS.md": "2553194101e959b46d97389ffdc3bfa701d7c7021c78ca840a2bd7aa4c149790",
     "CLAUDE.md": "5eba5f9929c82148d08422ba73176c19f69289a1709b187838242bef735f4dda",
-    ".agents/skills/pcdd-work/SKILL.md": "97e5f31bf1fe155b133c4b908ffc9403dfb1df939ea319239fdfea6e363dc713",
+    ".agents/skills/pcdd-work/SKILL.md": "14a533b08443e40fd9f4ffb2cdc9b8bc624b0b6aed2e7ac2590cecf2ca59822f",
     ".agents/skills/pcdd-review/SKILL.md": "b5304658162763ffd64ea19b2bf2db8d916113ba92bc07208d6d82aa04e3e3b0",
     ".agents/skills/pcdd-commit/SKILL.md": "dd13e638999066ae89199a55f1be7b006044646a9ad8257f80eb35ef037c6d40",
     ".agents/skills/pcdd-commit-review/SKILL.md": "69a3768adb8b0f61319fa3fd7ec6455716d055a69fa156057926f510a8563ba5",
-    ".claude/skills/pcdd-work/SKILL.md": "97e5f31bf1fe155b133c4b908ffc9403dfb1df939ea319239fdfea6e363dc713",
+    ".claude/skills/pcdd-work/SKILL.md": "14a533b08443e40fd9f4ffb2cdc9b8bc624b0b6aed2e7ac2590cecf2ca59822f",
     ".claude/skills/pcdd-review/SKILL.md": "b5304658162763ffd64ea19b2bf2db8d916113ba92bc07208d6d82aa04e3e3b0",
     ".claude/skills/pcdd-commit/SKILL.md": "dd13e638999066ae89199a55f1be7b006044646a9ad8257f80eb35ef037c6d40",
     ".claude/skills/pcdd-commit-review/SKILL.md": "69a3768adb8b0f61319fa3fd7ec6455716d055a69fa156057926f510a8563ba5"
