@@ -1,6 +1,6 @@
 {
   "name": "@pcdd-dev/cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Progressive Change-Driven Development for AI coding agents. Runs the PCDD CLI from PyPI through uv.",
   "keywords": ["ai", "agents", "codex", "claude-code", "workflow", "cli", "pcdd"],
   "homepage": "https://pcdd.dev",

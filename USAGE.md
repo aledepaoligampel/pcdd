@@ -1,4 +1,4 @@
-# Uso local de PCDD v0.4
+# Uso local de PCDD v0.5
 
 Requiere Python 3.9 o posterior. Sin dependencias de runtime ni servicios. Publicado en PyPI como [`pcdd`](https://pypi.org/project/pcdd/). Licencia MIT.
 
@@ -41,7 +41,7 @@ Esto no modifica tu configuración global. Alternativamente usar siempre `python
 
 ## Instalación
 
-`init` instala Codex y Claude por defecto. `init --adapters codex`, `init --adapters claude` o `init --adapters antigravity` elige uno; se pueden combinar con comas, por ejemplo `init --adapters codex,claude,antigravity`. La v0.4 no cambia adaptadores de una instalación existente: una selección distinta se rechaza, incluso si comparte rutas. Elegí Antigravity al instalar en un proyecto nuevo; no borres el manifiesto de un proyecto existente para forzar la selección.
+`init` instala Codex y Claude por defecto. `init --adapters codex`, `init --adapters claude` o `init --adapters antigravity` elige uno; se pueden combinar con comas, por ejemplo `init --adapters codex,claude,antigravity`. La v0.5 no cambia adaptadores de una instalación existente: una selección distinta se rechaza, incluso si comparte rutas. Elegí Antigravity al instalar en un proyecto nuevo; no borres el manifiesto de un proyecto existente para forzar la selección.
 
 Se crea `.pcdd/core.md`, configuración y manifiesto, skills `pcdd-work`, `pcdd-review`, `pcdd-commit` y `pcdd-commit-review` en `.agents/skills` y/o `.claude/skills`, y una referencia delimitada en `AGENTS.md`. Claude recibe también una referencia en `CLAUDE.md`. El texto fuera de los bloques se conserva, incluso con cambios locales posteriores.
 
@@ -96,7 +96,7 @@ pcdd update
 pcdd rollback
 ```
 
-`update` sincroniza los assets de la copia local del CLI con ese proyecto. No descarga versiones ni modifica otros repositorios. Para actualizar la herramienta, reemplazá su distribución local y luego previsualizá la actualización por proyecto. No existe un comando `upgrade` en v0.4.
+`update` sincroniza los assets de la copia local del CLI con ese proyecto. No descarga versiones ni modifica otros repositorios. Para actualizar la herramienta, reemplazá su distribución local y luego previsualizá la actualización por proyecto. No existe un comando `upgrade` en v0.5.
 
 Se rechazan archivos administrados modificados o ausentes, symlinks en rutas administradas y manifiestos incompatibles. Resolvé un conflicto explícitamente guardando tus personalizaciones en instrucciones del proyecto y restaurando la versión administrada original si decidís continuar. No hay `--force` ni merge automático.
 
@@ -143,7 +143,7 @@ pcdd status primera-feature --json
 
 Las claves y mensajes de error de máquina permanecen en inglés e independientes del idioma. Errores JSON se escriben en stdout como un único objeto `error` (code/message), con exit code no cero y sin texto adicional en stderr. Help y version también tienen envoltorio JSON al usar --json; el contenido de help está traducido. `acceptance` en status usa el código `requires_user_confirmation`. Los resultados de init/update se emiten solo cuando terminó la operación; una falla no produce un informe de éxito previo.
 
-Se mantiene el esquema 1. La v0.4.0 reconoce el inventario de dos skills de v0.1.0/v0.2.0 y el de cuatro de v0.3.0; actualiza al inventario vigente de cuatro skills al ejecutar `update` (también al repetir `init`). `pcdd update --dry-run` muestra los archivos nuevos sin escribir. Si ya existe un archivo no administrado en el destino de un skill nuevo, la operación se rechaza sin sobrescribirlo, incluso si su contenido coincide. `rollback` restaura el inventario anterior y retira los skills agregados, siempre que no hayan recibido modificaciones posteriores. No uses un ejecutable anterior sobre la instalación ampliada: para volver, ejecutá primero `rollback` con el CLI nuevo. Actualizar el ejecutable no modifica por sí solo proyectos anteriores.
+Se mantiene el esquema 1. La v0.5.0 reconoce el inventario de dos skills de v0.1.0/v0.2.0 y el de cuatro de v0.3.0 y v0.4.0 (incluido Antigravity en v0.4.0); actualiza al inventario vigente de cuatro skills al ejecutar `update` (también al repetir `init`). `pcdd update --dry-run` muestra los archivos nuevos sin escribir. Si ya existe un archivo no administrado en el destino de un skill nuevo, la operación se rechaza sin sobrescribirlo, incluso si su contenido coincide. `rollback` restaura el inventario anterior y retira los skills agregados, siempre que no hayan recibido modificaciones posteriores. No uses un ejecutable anterior sobre la instalación ampliada: para volver, ejecutá primero `rollback` con el CLI nuevo. Actualizar el ejecutable no modifica por sí solo proyectos anteriores.
 
 ## Empezar sin un prompt especial
 

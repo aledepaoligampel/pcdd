@@ -159,7 +159,7 @@ EN = {
     "x_disclaimer": "Shapes follow each approach’s organizing idea; real implementations vary. We haven’t measured time or tokens yet — when we do, we’ll publish the method with the numbers.",
     "f_h2": "Each change,<br>just enough process.", "f_lead": "Install in one line. Try it on your next change.",
     "f_star": "Star on GitHub",
-    "footer": "PCDD v0.4 is an early toolkit. The CLI manages files and records; instructions guide the agent but can’t guarantee a model follows them. Checks and your acceptance stay essential. Codex, Claude Code and Antigravity are trademarks of their respective owners; PCDD is not affiliated with them.",
+    "footer": "PCDD " + VERSION + " is an early toolkit. The CLI manages files and records; instructions guide the agent but can’t guarantee a model follows them. Checks and your acceptance stay essential. Codex, Claude Code and Antigravity are trademarks of their respective owners; PCDD is not affiliated with them.",
     "og_alt": "PCDD: ship with AI agents without losing the plot.",
     "license": "MIT License", "footer_label": "Footer", "skipped": "skipped", "copied_status": "Install command copied.",
 }
@@ -269,7 +269,7 @@ ES.update({
     "x_disclaimer": "La forma de cada columna sigue la idea organizadora de cada enfoque; las implementaciones reales varían. Todavía no medimos tiempo ni tokens: cuando lo hagamos, publicaremos el método junto con los números.",
     "f_h2": "Cada cambio,<br>el proceso justo.", "f_lead": "Se instala en una línea. Probalo en tu próximo cambio.",
     "f_star": "Dale una estrella en GitHub",
-    "footer": "PCDD v0.4 es un toolkit temprano. La CLI gestiona archivos y registros; las instrucciones guían al agente pero no garantizan que el modelo las siga. Los checks y tu aceptación siguen siendo esenciales. Codex, Claude Code y Antigravity son marcas de sus respectivos dueños; PCDD no está afiliado a ellos.",
+    "footer": "PCDD " + VERSION + " es un toolkit temprano. La CLI gestiona archivos y registros; las instrucciones guían al agente pero no garantizan que el modelo las siga. Los checks y tu aceptación siguen siendo esenciales. Codex, Claude Code y Antigravity son marcas de sus respectivos dueños; PCDD no está afiliado a ellos.",
     "og_alt": "PCDD: programá con agentes de IA sin perder el hilo.",
     "license": "Licencia MIT", "footer_label": "Pie de página", "skipped": "omitido", "copied_status": "Comando de instalación copiado.",
     "star": "Star",

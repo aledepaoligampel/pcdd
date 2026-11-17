@@ -19,7 +19,8 @@ INTERNAL = {'.pcdd/installation.json', '.pcdd/config.json'}
 LEGACY_SKILLS = ('pcdd-work', 'pcdd-review')
 SKILLS = LEGACY_SKILLS + ('pcdd-commit', 'pcdd-commit-review')
 VERSION_SKILLS = {'0.1.0': LEGACY_SKILLS, '0.2.0': LEGACY_SKILLS,
-                  '0.3.0': SKILLS, VERSION: SKILLS}
+                  '0.3.0': SKILLS, '0.4.0': SKILLS, '0.5.0': SKILLS, VERSION: SKILLS}
+CODEX_CLAUDE_ONLY = {'0.1.0', '0.2.0', '0.3.0'}
 ADAPTER_FOLDERS = {'codex': '.agents', 'claude': '.claude', 'antigravity': '.agents'}
 
 
@@ -170,7 +171,7 @@ def installation(project):
     if skills is None:
         raise Conflict('Invalid managed file list')
     adapters = manifest.get('adapters', [])
-    supported = ADAPTER_FOLDERS if manifest['version'] == VERSION else ('codex', 'claude')
+    supported = ('codex', 'claude') if manifest['version'] in CODEX_CLAUDE_ONLY else ADAPTER_FOLDERS
     if (not isinstance(adapters, list) or not adapters
             or any(not isinstance(a, str) or a not in supported for a in adapters)
             or len(set(adapters)) != len(adapters)):

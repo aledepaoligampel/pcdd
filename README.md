@@ -89,6 +89,6 @@ PCDD is released under the [MIT License](LICENSE).
 
 ## Current scope
 
-PCDD v0.4 is an early toolkit. Antigravity installation is covered by CLI tests, with a discovery and continuation pilot in Antigravity CLI. Behavior in the graphical IDE has not been verified; check discovery in the client you use. The CLI manages files and records; the instructions guide agent behavior. It does not technically enforce every workflow rule or guarantee that a model follows it.
+PCDD v0.5 is an early toolkit. Antigravity installation is covered by CLI tests, with a discovery and continuation pilot in Antigravity CLI. Behavior in the graphical IDE has not been verified; check discovery in the client you use. The CLI manages files and records; the instructions guide agent behavior. It does not technically enforce every workflow rule or guarantee that a model follows it.
 
 Task counts measure completed tasks, not effort. Project checks and human acceptance remain necessary.

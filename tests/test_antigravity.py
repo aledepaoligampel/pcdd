@@ -12,6 +12,8 @@ import unittest
 CLI = Path(__file__).resolve().parents[1] / 'pcdd.py'
 PACKAGE = CLI.parent / 'src' / 'pcdd_toolkit'
 SKILLS = ('pcdd-work', 'pcdd-review', 'pcdd-commit', 'pcdd-commit-review')
+CURRENT = subprocess.run([sys.executable, str(CLI), '--version'], capture_output=True,
+                         text=True, check=True).stdout.split()[-1]
 
 
 class AntigravityTests(unittest.TestCase):
@@ -58,7 +60,7 @@ class AntigravityTests(unittest.TestCase):
                     self.run_cli(*args)
                     report = self.run_cli('doctor')
                     self.assertEqual(report['adapters'], list(selected))
-                    self.assertEqual(report['installed'], '0.4.0')
+                    self.assertEqual(report['installed'], CURRENT)
                     for folder, enabled in (
                             ('.agents', 'codex' in selected or 'antigravity' in selected),
                             ('.claude', 'claude' in selected)):
@@ -140,11 +142,33 @@ class AntigravityTests(unittest.TestCase):
         self.assertEqual(before, self.snapshot())
         self.run_cli('update')
         report = self.run_cli('doctor')
-        self.assertEqual(report['installed'], '0.4.0')
+        self.assertEqual(report['installed'], CURRENT)
         self.assertEqual(report['adapters'], ['codex', 'claude'])
         self.run_cli('rollback')
         self.assertEqual(before, self.snapshot())
         self.run_cli('doctor')
+
+    def test_legacy_04_upgrade_preserves_selection_and_rolls_back(self):
+        for selection in ('codex,antigravity', 'codex,claude', 'claude'):
+            with self.subTest(selection=selection):
+                shutil.rmtree(self.root)
+                self.root.mkdir()
+                self.run_cli('init', '--adapters', selection)
+                self.run_cli('new', 'example')
+                path = self.root / '.pcdd/installation.json'
+                manifest = json.loads(path.read_text())
+                manifest['version'] = '0.4.0'
+                path.write_text(json.dumps(manifest))
+                before = self.snapshot()
+                self.assertEqual(self.run_cli('doctor')['installed'], '0.4.0')
+                self.run_cli('status', 'example')
+                self.run_cli('update')
+                report = self.run_cli('doctor')
+                self.assertEqual(report['installed'], CURRENT)
+                self.assertEqual(report['adapters'], selection.split(','))
+                self.run_cli('rollback')
+                self.assertEqual(before, self.snapshot())
+                self.run_cli('doctor')
 
     def test_existing_selection_is_not_changed_implicitly(self):
         self.run_cli('init', '--adapters', 'codex')
@@ -159,7 +183,8 @@ class AntigravityTests(unittest.TestCase):
         self.run_cli('init', '--adapters', 'antigravity')
         path = self.root / '.pcdd/installation.json'
         manifest = json.loads(path.read_text())
-        for version, adapters in (('0.3.0', ['antigravity']),
+        for version, adapters in (('0.1.0', ['antigravity']), ('0.2.0', ['antigravity']),
+                                  ('0.3.0', ['antigravity']),
                                   ('0.4.0', ['antigravity', 'antigravity'])):
             manifest.update(version=version, adapters=adapters)
             path.write_text(json.dumps(manifest))
